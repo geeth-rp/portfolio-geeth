@@ -191,6 +191,17 @@ const Education = () => (
 const Skills = () => {
   const skills = [
     {
+      title: 'QA & Testing (Learning)', icon: Target,
+      gradient: 'from-teal-400 to-emerald-600', color: 'text-teal-600 dark:text-teal-400',
+      tags: ['SQL Basics', 'API Testing (Postman)', 'Test Case Design', 'Bug Reporting'],
+      subtitle: "Actively building foundational knowledge in software testing"
+    },
+    {
+      title: 'Full-Stack & App Dev', icon: Code,
+      gradient: 'from-zinc-400 to-zinc-600 dark:from-zinc-500 dark:to-zinc-800', color: 'text-zinc-700 dark:text-white',
+      tags: ['Flutter', 'React', 'Node.js', 'Python', 'Dart', 'Tailwind CSS', 'MongoDB', 'Supabase']
+    },
+    {
       title: 'Graphic Design', icon: Palette,
       gradient: 'from-pink-500 to-rose-600', color: 'text-pink-600 dark:text-pink-400',
       tags: ['Canva', 'Affinity Designer', 'Affinity Photo']
@@ -214,18 +225,7 @@ const Skills = () => {
       title: 'Leadership', icon: Users,
       gradient: 'from-orange-400 to-red-500', color: 'text-orange-500 dark:text-orange-400',
       tags: ['Team Management', 'Event Planning', 'Project Planning']
-    },
-    {
-      title: 'Core Dev', icon: Code,
-      gradient: 'from-zinc-400 to-zinc-600 dark:from-zinc-500 dark:to-zinc-800', color: 'text-zinc-700 dark:text-white',
-      tags: ['Java', 'Python']
-    },
-    {
-      title: 'QA & Testing (Learning)', icon: Target,
-      gradient: 'from-teal-400 to-emerald-600', color: 'text-teal-600 dark:text-teal-400',
-      tags: ['SQL Basics', 'API Testing (Postman)', 'Test Case Design', 'Bug Reporting'],
-      subtitle: "Actively building foundational knowledge in software testing"
-    },
+    }
   ];
   return (
     <section id="skills" className="py-32 bg-gray-50 dark:bg-black transition-colors duration-300">
@@ -399,9 +399,9 @@ const CertificatesAndProjects = () => {
   const certificates = [
     {
       name: "IEEE Membership",
-      desc: "Long-term volunteering member since 2024, present",
+      desc: "Long-term volunteering member since 2024",
       issuer: "IEEE",
-      year: "2024 – Present"
+      year: "2026"
     },
     {
       name: "IEEE Computer Society Membership",
@@ -481,7 +481,7 @@ const CertificatesAndProjects = () => {
                        )}
                        {p.live && (
                          <a href={p.live} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-zinc-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-white transition-colors text-[10px] font-black uppercase tracking-widest">
-                           <ExternalLink size={16} /> Live Demo
+                           <ExternalLink size={16} /> Web Link
                          </a>
                        )}
                      </div>
