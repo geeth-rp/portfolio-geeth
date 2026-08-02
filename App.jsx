@@ -581,22 +581,26 @@ const Contact = () => {
           </RevealOnScroll>
           <RevealOnScroll delay="200">
             <div className="bg-white dark:bg-zinc-900/80 p-12 rounded-[4rem] border border-zinc-200 dark:border-white/10 relative overflow-hidden group shadow-2xl backdrop-blur-md">
-              <form className="space-y-8 relative z-10">
+              <form action="https://formspree.io/f/mojgorrl" method="POST" className="space-y-8 relative z-10">
                 <div className="grid md:grid-cols-2 gap-8">
                   <div className="space-y-2">
                     <label className="text-[10px] uppercase tracking-widest text-zinc-500 dark:text-gray-500 font-black block pl-2 italic">First Name</label>
-                    <input type="text" className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/5 rounded-2xl p-5 text-zinc-900 dark:text-white focus:outline-none focus:border-emerald-500/50 transition-all focus:bg-white dark:focus:bg-black/60 shadow-inner" placeholder="Geeth" />
+                    <input name="firstName" type="text" required className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/5 rounded-2xl p-5 text-zinc-900 dark:text-white focus:outline-none focus:border-emerald-500/50 transition-all focus:bg-white dark:focus:bg-black/60 shadow-inner" placeholder="Geeth" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] uppercase tracking-widest text-zinc-500 dark:text-gray-500 font-black block pl-2 italic">Last Name</label>
-                    <input type="text" className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/5 rounded-2xl p-5 text-zinc-900 dark:text-white focus:outline-none focus:border-emerald-500/50 transition-all focus:bg-white dark:focus:bg-black/60 shadow-inner" placeholder="Pelpola" />
+                    <input name="lastName" type="text" required className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/5 rounded-2xl p-5 text-zinc-900 dark:text-white focus:outline-none focus:border-emerald-500/50 transition-all focus:bg-white dark:focus:bg-black/60 shadow-inner" placeholder="Pelpola" />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-zinc-500 dark:text-gray-500 font-black block pl-2 italic">Message</label>
-                  <textarea rows="4" className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/5 rounded-2xl p-5 text-zinc-900 dark:text-white focus:outline-none focus:border-emerald-500/50 transition-all focus:bg-white dark:focus:bg-black/60 shadow-inner" placeholder="How can we build the future together?"></textarea>
+                  <label className="text-[10px] uppercase tracking-widest text-zinc-500 dark:text-gray-500 font-black block pl-2 italic">Email Address</label>
+                  <input name="email" type="email" required className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/5 rounded-2xl p-5 text-zinc-900 dark:text-white focus:outline-none focus:border-emerald-500/50 transition-all focus:bg-white dark:focus:bg-black/60 shadow-inner" placeholder="you@example.com" />
                 </div>
-                <button className="w-full bg-zinc-900 dark:bg-white text-white dark:text-black py-7 rounded-2xl font-black uppercase tracking-[0.4em] text-[10px] hover:bg-emerald-600 dark:hover:bg-emerald-500 hover:text-white transition-all shadow-xl group/btn overflow-hidden relative">
+                <div className="space-y-2">
+                  <label className="text-[10px] uppercase tracking-widest text-zinc-500 dark:text-gray-500 font-black block pl-2 italic">Message</label>
+                  <textarea name="message" required rows="4" className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/5 rounded-2xl p-5 text-zinc-900 dark:text-white focus:outline-none focus:border-emerald-500/50 transition-all focus:bg-white dark:focus:bg-black/60 shadow-inner" placeholder="How can we build the future together?"></textarea>
+                </div>
+                <button type="submit" className="w-full bg-zinc-900 dark:bg-white text-white dark:text-black py-7 rounded-2xl font-black uppercase tracking-[0.4em] text-[10px] hover:bg-emerald-600 dark:hover:bg-emerald-500 hover:text-white transition-all shadow-xl group/btn overflow-hidden relative">
                   <div className="relative z-10 flex items-center justify-center gap-3">
                     Launch Transmission <ArrowRight className="group-hover/btn:translate-x-3 transition-transform duration-500" />
                   </div>
