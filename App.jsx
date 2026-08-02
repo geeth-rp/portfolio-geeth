@@ -5,6 +5,7 @@ import {
   Brain, Target, GraduationCap, Calendar, Menu, X, Star, Trophy,
   CheckCircle2, Megaphone, Sun, Moon, FileText, Layout, ExternalLink
 } from 'lucide-react';
+import profileImg from './profile.png';
 
 // Animation Hook for smooth reveal
 const RevealOnScroll = ({ children, delay = "0", className = "" }) => {
@@ -110,7 +111,7 @@ const Hero = () => {
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
             <div className="w-48 h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-full bg-zinc-200 dark:bg-zinc-800 border-4 border-white dark:border-zinc-700 shadow-2xl flex items-center justify-center overflow-hidden flex-shrink-0 relative z-10">
                 <img 
-                src="/profile.png" 
+                src={profileImg} 
                 alt="Geeth Profile" 
                 className="w-full h-full object-cover" 
                 />
