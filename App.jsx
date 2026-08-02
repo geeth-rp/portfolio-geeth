@@ -72,11 +72,11 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
               {link}
             </a>
           ))}
-          
+
           <button onClick={toggleTheme} className="text-zinc-500 dark:text-gray-300 hover:text-zinc-900 dark:hover:text-white transition-colors">
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
-          
+
           <a href="#contact" className="bg-zinc-900 dark:bg-white text-white dark:text-black px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-500 dark:hover:text-white transition-all">
             Let's Talk
           </a>
@@ -111,14 +111,14 @@ const Hero = () => {
         <div className="flex flex-col items-center relative z-20 w-full">
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
             <div className="w-48 h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-full bg-zinc-200 dark:bg-zinc-800 border-4 border-white dark:border-zinc-700 shadow-2xl flex items-center justify-center overflow-hidden flex-shrink-0 relative z-10">
-                <img 
-                src={profileImg} 
-                alt="Geeth Profile" 
-                className="w-full h-full object-cover" 
-                />
+              <img
+                src={profileImg}
+                alt="Geeth Profile"
+                className="w-full h-full object-cover"
+              />
             </div>
 
-            
+
             <h1 className="text-[15vw] md:text-[12vw] font-black text-zinc-900 dark:text-white leading-[0.8] tracking-tighter uppercase select-none opacity-90 italic relative z-0 text-center md:text-left">
               HI, I'M <br /> GEETH
             </h1>
@@ -135,7 +135,7 @@ const Hero = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 animate-gradient-xy"></div>
                   <span className="relative text-white z-10 flex items-center gap-3 italic font-bold tracking-widest">CONNECT WITH ME <ArrowRight size={20} /></span>
                 </a>
-                
+
                 <a href={cvFile} target="_blank" rel="noopener noreferrer" className="group relative px-12 py-6 rounded-full font-black text-sm uppercase tracking-[0.3em] overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white border border-zinc-200 dark:border-white/10 hover:border-emerald-500 dark:hover:border-emerald-500 flex items-center justify-center">
                   <span className="relative z-10 flex items-center gap-3 italic font-bold tracking-widest">VIEW CV <FileText size={20} className="text-emerald-500" /></span>
                 </a>
@@ -199,17 +199,17 @@ const Skills = () => {
     {
       title: 'Full-Stack & App Dev', icon: Code,
       gradient: 'from-zinc-400 to-zinc-600 dark:from-zinc-500 dark:to-zinc-800', color: 'text-zinc-700 dark:text-white',
-      tags: ['Flutter', 'React', 'Node.js', 'Python', 'Dart', 'Tailwind CSS', 'MongoDB', 'Supabase']
+      tags: ['Flutter', 'React', 'Node.js', 'Python', 'Dart', 'Tailwind CSS', 'MongoDB', 'Supabase', 'Figma']
     },
     {
       title: 'Graphic Design', icon: Palette,
       gradient: 'from-pink-500 to-rose-600', color: 'text-pink-600 dark:text-pink-400',
-      tags: ['Canva', 'Affinity Designer', 'Affinity Photo']
+      tags: ['Canva', 'Affinity Designer', 'Affinity Photo', 'Figma']
     },
     {
       title: 'AI Design', icon: Sparkles,
       gradient: 'from-emerald-400 to-cyan-500', color: 'text-emerald-600 dark:text-emerald-400',
-      tags: ['ComfyUI', 'Flux', 'Qwen', 'Z Image Turbo', 'Wan', 'NanoBanana']
+      tags: ['ComfyUI', 'Flux', 'Qwen', 'Z Image Turbo', 'Wan', 'NanoBanana', 'Veo', 'Kling Video']
     },
     {
       title: 'Video Editing', icon: Video,
@@ -362,34 +362,34 @@ const Experience = () => {
 
 const CertificatesAndProjects = () => {
   const projects = [
-    { 
-      title: "Fellowship – AI Learning Assistant", 
+    {
+      title: "Fellowship – AI Learning Assistant",
       category: "ACADEMIC PROJECT",
       status: "ONGOING",
-      desc: "AI-powered learning assistant that promotes critical thinking using Socratic questioning, adaptive reasoning, and personalized reflection.", 
-      tags: ["FLUTTER", "PYTHON", "FLASK", "SUPABASE", "OPENAI API"] 
+      desc: "AI-powered learning assistant that promotes critical thinking using Socratic questioning, adaptive reasoning, and personalized reflection.",
+      tags: ["FLUTTER", "PYTHON", "FLASK", "SUPABASE", "OPENAI API"]
     },
-    { 
-      title: "Utopia – Smart Town Management", 
+    {
+      title: "Utopia – Smart Town Management",
       category: "ACADEMIC PROJECT",
       status: "COMPLETED",
-      desc: "Smart city platform with a citizen mobile app and web dashboard for real-time reporting, public services, and emergency notifications.", 
+      desc: "Smart city platform with a citizen mobile app and web dashboard for real-time reporting, public services, and emergency notifications.",
       tags: ["FLUTTER", "DART", "REACT", "NODE.JS", "JAVASCRIPT"],
       github: "https://github.com/omega-u20/utopia"
     },
-    { 
-      title: "LankaSmartMart", 
+    {
+      title: "LankaSmartMart",
       category: "ACADEMIC PROJECT",
       status: "COMPLETED",
-      desc: "Full-stack e-commerce platform featuring product management, secure authentication, shopping cart, and order processing.", 
+      desc: "Full-stack e-commerce platform featuring product management, secure authentication, shopping cart, and order processing.",
       tags: ["REACT", "NODE.JS", "EXPRESS", "MONGODB", "JWT"],
       github: "https://github.com/omega-u20/LankaSmartMart"
     },
-    { 
-      title: "Pixlore AI Studio", 
+    {
+      title: "Pixlore AI Studio",
       category: "PERSONAL PROJECT",
       status: "COMPLETED",
-      desc: "My personal AI business website showcasing creative AI services and custom AI-powered content generation solutions.", 
+      desc: "My personal AI business website showcasing creative AI services and custom AI-powered content generation solutions.",
       tags: ["REACT", "TYPESCRIPT", "TAILWIND CSS", "VITE"],
       github: "https://github.com/geeth-rp/Pixlore",
       live: "https://geeth-rp.github.io/Pixlore"
@@ -432,7 +432,7 @@ const CertificatesAndProjects = () => {
   return (
     <section className="py-32 bg-white dark:bg-zinc-950 transition-colors duration-300 border-t border-zinc-100 dark:border-white/5">
       <div className="max-w-7xl mx-auto px-8">
-        
+
         {/* Projects Section */}
         <div className="mb-24">
           <RevealOnScroll>
@@ -441,51 +441,51 @@ const CertificatesAndProjects = () => {
               <h2 className="text-5xl md:text-7xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter leading-none">Projects</h2>
             </div>
           </RevealOnScroll>
-          
+
           <div className="grid md:grid-cols-2 gap-8">
             {projects.map((p, i) => (
               <RevealOnScroll key={i} delay={i * 100} className="h-full">
                 <div className="h-full bg-zinc-50 dark:bg-zinc-900/50 p-10 rounded-[3rem] border border-zinc-200 dark:border-white/5 hover:border-emerald-500/30 transition-all group shadow-lg flex flex-col relative">
-                   <div className="flex justify-between items-start mb-6">
-                     <div className="w-14 h-14 rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-white/10 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                       <Layout className="text-emerald-600 dark:text-emerald-400" size={24} />
-                     </div>
-                     <div className="flex flex-col items-end gap-2">
-                       <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-gray-400">
-                         {p.category}
-                       </span>
-                       <span className={`inline-block px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest shadow-sm transition-colors ${p.status === 'ONGOING' ? 'border-emerald-200 dark:border-emerald-900/50 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 group-hover:border-emerald-300 dark:group-hover:border-emerald-500/50' : 'border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-white group-hover:border-emerald-300 dark:group-hover:border-emerald-500/30'}`}>
-                         {p.status}
-                       </span>
-                     </div>
-                   </div>
-                   
-                   <h3 className="text-2xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tight mb-4">{p.title}</h3>
-                   <p className="text-zinc-600 dark:text-gray-400 text-sm leading-relaxed mb-8">{p.desc}</p>
-                   
-                   <div className="flex flex-wrap gap-2 mb-8 mt-auto">
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="w-14 h-14 rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-white/10 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                      <Layout className="text-emerald-600 dark:text-emerald-400" size={24} />
+                    </div>
+                    <div className="flex flex-col items-end gap-2">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 dark:text-gray-400">
+                        {p.category}
+                      </span>
+                      <span className={`inline-block px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest shadow-sm transition-colors ${p.status === 'ONGOING' ? 'border-emerald-200 dark:border-emerald-900/50 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 group-hover:border-emerald-300 dark:group-hover:border-emerald-500/50' : 'border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-white group-hover:border-emerald-300 dark:group-hover:border-emerald-500/30'}`}>
+                        {p.status}
+                      </span>
+                    </div>
+                  </div>
+
+                  <h3 className="text-2xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tight mb-4">{p.title}</h3>
+                  <p className="text-zinc-600 dark:text-gray-400 text-sm leading-relaxed mb-8">{p.desc}</p>
+
+                  <div className="flex flex-wrap gap-2 mb-8 mt-auto">
                     {p.tags.map((tag) => (
                       <span key={tag} className="px-3 py-1 bg-white dark:bg-black/50 border border-zinc-200 dark:border-white/10 rounded-full text-[10px] font-bold text-zinc-500 dark:text-gray-400 uppercase tracking-widest">
                         {tag}
                       </span>
                     ))}
-                   </div>
-                   
-                   {/* Footer links */}
-                   {(p.github || p.live) && (
-                     <div className="mt-4 flex items-center gap-6 pt-6 border-t border-zinc-200 dark:border-white/10">
-                       {p.github && (
-                         <a href={p.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-zinc-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-white transition-colors text-[10px] font-black uppercase tracking-widest">
-                           <Github size={16} /> GitHub
-                         </a>
-                       )}
-                       {p.live && (
-                         <a href={p.live} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-zinc-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-white transition-colors text-[10px] font-black uppercase tracking-widest">
-                           <ExternalLink size={16} /> Web Link
-                         </a>
-                       )}
-                     </div>
-                   )}
+                  </div>
+
+                  {/* Footer links */}
+                  {(p.github || p.live) && (
+                    <div className="mt-4 flex items-center gap-6 pt-6 border-t border-zinc-200 dark:border-white/10">
+                      {p.github && (
+                        <a href={p.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-zinc-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-white transition-colors text-[10px] font-black uppercase tracking-widest">
+                          <Github size={16} /> GitHub
+                        </a>
+                      )}
+                      {p.live && (
+                        <a href={p.live} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-zinc-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-white transition-colors text-[10px] font-black uppercase tracking-widest">
+                          <ExternalLink size={16} /> Web Link
+                        </a>
+                      )}
+                    </div>
+                  )}
                 </div>
               </RevealOnScroll>
             ))}
@@ -499,27 +499,27 @@ const CertificatesAndProjects = () => {
               <h2 className="text-4xl md:text-5xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter leading-none">Certificates</h2>
             </div>
           </RevealOnScroll>
-          
+
           <div className="bg-zinc-50 dark:bg-zinc-900/30 rounded-[3rem] border border-zinc-200 dark:border-white/5 p-8 md:p-12 shadow-xl">
-             <div className="flex flex-col gap-6">
-                {certificates.map((cert, i) => (
-                  <RevealOnScroll key={i} delay={i * 100}>
-                    <div className="flex flex-col md:flex-row md:items-center gap-4 p-6 bg-white dark:bg-zinc-950 rounded-2xl border border-zinc-100 dark:border-white/5 hover:border-emerald-300 dark:hover:border-emerald-500/30 transition-colors">
-                      <div className="w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center flex-shrink-0">
-                         <FileText className="text-emerald-600 dark:text-emerald-400" size={20} />
-                      </div>
-                      <div className="flex-grow">
-                         <h4 className="text-lg font-bold text-zinc-900 dark:text-white mb-1">{cert.name}</h4>
-                         <p className="text-zinc-600 dark:text-gray-400 text-sm mb-1">{cert.desc}</p>
-                         <p className="text-zinc-400 dark:text-gray-500 text-[10px] font-black uppercase tracking-widest">{cert.issuer}</p>
-                      </div>
-                      <div className="text-zinc-400 dark:text-zinc-500 font-mono text-sm uppercase tracking-widest mt-2 md:mt-0 flex-shrink-0 text-right">
-                         {cert.year}
-                      </div>
+            <div className="flex flex-col gap-6">
+              {certificates.map((cert, i) => (
+                <RevealOnScroll key={i} delay={i * 100}>
+                  <div className="flex flex-col md:flex-row md:items-center gap-4 p-6 bg-white dark:bg-zinc-950 rounded-2xl border border-zinc-100 dark:border-white/5 hover:border-emerald-300 dark:hover:border-emerald-500/30 transition-colors">
+                    <div className="w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center flex-shrink-0">
+                      <FileText className="text-emerald-600 dark:text-emerald-400" size={20} />
                     </div>
-                  </RevealOnScroll>
-                ))}
-             </div>
+                    <div className="flex-grow">
+                      <h4 className="text-lg font-bold text-zinc-900 dark:text-white mb-1">{cert.name}</h4>
+                      <p className="text-zinc-600 dark:text-gray-400 text-sm mb-1">{cert.desc}</p>
+                      <p className="text-zinc-400 dark:text-gray-500 text-[10px] font-black uppercase tracking-widest">{cert.issuer}</p>
+                    </div>
+                    <div className="text-zinc-400 dark:text-zinc-500 font-mono text-sm uppercase tracking-widest mt-2 md:mt-0 flex-shrink-0 text-right">
+                      {cert.year}
+                    </div>
+                  </div>
+                </RevealOnScroll>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -542,11 +542,22 @@ const Contact = () => {
             </p>
             <div className="space-y-10">
               <div className="flex items-center gap-6 group cursor-pointer">
-                <AppIcon icon={Mail} gradient="from-zinc-400 to-zinc-600 dark:from-zinc-700 dark:to-black" color="text-zinc-900 dark:text-white" />
-                <div>
-                  <div className="text-[10px] uppercase tracking-widest text-zinc-600 dark:text-gray-400 font-black mb-1 italic">Direct Transmission</div>
-                  <div className="text-xl text-zinc-900 dark:text-white font-bold group-hover:text-emerald-600 dark:group-hover:text-emerald-500 transition-colors">pelpolageeth@gmail.com</div>
-                </div>
+                <a href="mailto:pelpolageeth@gmail.com" className="flex items-center gap-6">
+                  <AppIcon icon={Mail} gradient="from-zinc-400 to-zinc-600 dark:from-zinc-700 dark:to-black" color="text-zinc-900 dark:text-white" />
+                  <div>
+                    <div className="text-[10px] uppercase tracking-widest text-zinc-600 dark:text-gray-400 font-black mb-1 italic">Direct Transmission</div>
+                    <div className="text-xl text-zinc-900 dark:text-white font-bold group-hover:text-emerald-600 dark:group-hover:text-emerald-500 transition-colors">pelpolageeth@gmail.com</div>
+                  </div>
+                </a>
+              </div>
+              <div className="flex items-center gap-6 group cursor-pointer">
+                <a href="tel:+94766938306" className="flex items-center gap-6">
+                  <AppIcon icon={Smartphone} gradient="from-teal-400 to-emerald-600 dark:from-teal-600 dark:to-emerald-800" color="text-teal-700 dark:text-white" />
+                  <div>
+                    <div className="text-[10px] uppercase tracking-widest text-zinc-600 dark:text-gray-400 font-black mb-1 italic">Phone Number</div>
+                    <div className="text-xl text-zinc-900 dark:text-white font-bold group-hover:text-emerald-600 dark:group-hover:text-emerald-500 transition-colors">+94 766 938 306</div>
+                  </div>
+                </a>
               </div>
               <div className="flex items-center gap-6 group cursor-pointer">
                 <a href="https://linkedin.com/in/Geeth-Rangika-Pelpola" target="_blank" rel="noopener noreferrer" className="flex items-center gap-6">
