@@ -272,11 +272,10 @@ const Skills = () => {
 
 const Interests = () => {
   const interests = [
-    { title: 'AI Content Creation', icon: Brain, desc: 'Generating AI influencer models for business use.' },
-    { title: 'Generative AI Workflows', icon: Sparkles, desc: 'ComfyUI, Flux, Qwen, Wan, Nanobanana.' },
-    { title: 'Video & Motion', icon: Video, desc: 'AI-driven motion content for clients.' },
-    { title: 'Social Media Management', icon: Share2, desc: 'Growing TikTok, YouTube, and FB accounts.' },
-    { title: 'Software Quality', icon: Target, desc: 'Building foundations in QA and test design.' }
+    { title: 'Generative AI & Automation', icon: Sparkles, desc: 'Exploring the frontiers of AI with ComfyUI, Flux, and Qwen.' },
+    { title: 'Software Quality & Testing', icon: Target, desc: 'Quality-first mindset. Deeply interested in QA methodologies.' },
+    { title: 'UI/UX & Digital Design', icon: Palette, desc: 'Bridging engineering and aesthetics with Figma and Affinity.' },
+    { title: 'Community Leadership', icon: Users, desc: 'Dedicated to giving back to the tech community via IEEE.' }
   ];
   return (
     <section id="interests" className="py-32 bg-white dark:bg-zinc-950 transition-colors duration-300">
@@ -284,7 +283,7 @@ const Interests = () => {
         <RevealOnScroll>
           <h2 className="text-6xl md:text-8xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter mb-24 text-center leading-none">Interests</h2>
         </RevealOnScroll>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {interests.map((item, i) => (
             <div key={i} className="flex flex-col items-center text-center group">
               <div className="w-20 h-20 rounded-full bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 flex items-center justify-center mb-6 group-hover:bg-emerald-50 dark:group-hover:bg-emerald-500/10 group-hover:border-emerald-300 dark:group-hover:border-emerald-500/30 transition-all shadow-lg">
@@ -664,6 +663,7 @@ const App = () => {
       <Hero />
       <Education />
       <Skills />
+      <Interests />
       <Experience />
       <CertificatesAndProjects />
       <Contact />
