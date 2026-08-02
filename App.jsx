@@ -6,6 +6,7 @@ import {
   CheckCircle2, Megaphone, Sun, Moon, FileText, Layout, ExternalLink
 } from 'lucide-react';
 import profileImg from './profile.png';
+import cvFile from './Geeth_CV_OG.pdf';
 
 // Animation Hook for smooth reveal
 const RevealOnScroll = ({ children, delay = "0", className = "" }) => {
@@ -128,13 +129,19 @@ const Hero = () => {
               Leading teams and managing projects taught me why quality-first thinking matters that's what's driving me toward <span className="text-zinc-900 dark:text-white font-bold">software testing and QA</span>. It's the same instinct behind mastering <span className="text-zinc-900 dark:text-white font-bold">Generative AI</span> for real businesses.
             </p>
 
-            <div className="flex flex-col md:flex-row gap-10 justify-center items-center">
-              <a href="#contact" className="group relative px-16 py-7 rounded-full font-black text-sm uppercase tracking-[0.3em] overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-2xl">
-                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 animate-gradient-xy"></div>
-                <span className="relative text-white z-10 flex items-center gap-3 italic font-bold tracking-widest">CONNECT WITH ME <ArrowRight size={20} /></span>
-              </a>
+            <div className="flex flex-col gap-10 items-center justify-center">
+              <div className="flex flex-col md:flex-row gap-6">
+                <a href="#contact" className="group relative px-12 py-6 rounded-full font-black text-sm uppercase tracking-[0.3em] overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-2xl">
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 animate-gradient-xy"></div>
+                  <span className="relative text-white z-10 flex items-center gap-3 italic font-bold tracking-widest">CONNECT WITH ME <ArrowRight size={20} /></span>
+                </a>
+                
+                <a href={cvFile} target="_blank" rel="noopener noreferrer" className="group relative px-12 py-6 rounded-full font-black text-sm uppercase tracking-[0.3em] overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white border border-zinc-200 dark:border-white/10 hover:border-emerald-500 dark:hover:border-emerald-500 flex items-center justify-center">
+                  <span className="relative z-10 flex items-center gap-3 italic font-bold tracking-widest">VIEW CV <FileText size={20} className="text-emerald-500" /></span>
+                </a>
+              </div>
 
-              <div className="flex gap-8 items-center">
+              <div className="flex gap-8 items-center justify-center">
                 <a href="https://linkedin.com/in/Geeth-Rangika-Pelpola" target="_blank" rel="noopener noreferrer" className="text-zinc-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-white transition-colors flex items-center gap-3 uppercase text-[11px] tracking-[0.4em] font-black italic">
                   <Linkedin size={20} /> LINKEDIN
                 </a>
