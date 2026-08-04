@@ -14,6 +14,10 @@ import exp4 from './exp4.jpg';
 import exp5 from './exp5.jpg';
 import exp6 from './exp6.jpg';
 
+import cert1 from './public/certificates/cert1.jpg';
+import cert2 from './public/certificates/cert2.jpg';
+import cert3 from './public/certificates/cert3.jpg';
+
 
 // Animation Hook for smooth reveal
 const RevealOnScroll = ({ children, delay = "0", className = "" }) => {
@@ -414,21 +418,21 @@ const CertificatesAndProjects = () => {
       desc: "Long-term volunteering member since 2024",
       issuer: "IEEE",
       year: "2026",
-      image: "/certificates/cert1.jpg"
+      image: cert1
     },
     {
       name: "IEEE Computer Society Membership",
       desc: "Vice-Chairperson, IEEE Computer Society of SLTC",
       issuer: "IEEE Computer Society",
       year: "2026",
-      image: "/certificates/cert2.jpg"
+      image: cert2
     },
     {
       name: "Business Analysis Basics",
       desc: "Foundational course covering business analysis concepts and processes",
       issuer: "Simplilearn SkillUp",
       year: "2026",
-      image: "/certificates/cert3.jpg"
+      image: cert3
     }
   ];
 
