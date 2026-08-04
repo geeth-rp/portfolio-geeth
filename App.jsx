@@ -408,7 +408,7 @@ const CertificatesAndProjects = () => {
       desc: "My personal AI business website showcasing creative AI services and custom AI-powered content generation solutions.",
       tags: ["REACT", "TYPESCRIPT", "TAILWIND CSS", "VITE"],
       github: "https://github.com/geeth-rp/Pixlore",
-      live: "https://geeth-rp.github.io/Pixlore"
+      live: "https://geeth-rp.github.io/pixlore-web/"
     }
   ];
 
