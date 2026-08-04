@@ -7,6 +7,13 @@ import {
 } from 'lucide-react';
 import profileImg from './profile.png';
 import cvFile from './Geeth_CV_OG.pdf';
+import exp1 from './exp1.jpg';
+import exp2 from './exp2.jpg';
+import exp3 from './exp3.jpg';
+import exp4 from './exp4.jpg';
+import exp5 from './exp5.jpg';
+import exp6 from './exp6.jpg';
+
 
 // Animation Hook for smooth reveal
 const RevealOnScroll = ({ children, delay = "0", className = "" }) => {
@@ -63,24 +70,32 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
   return (
     <nav className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-white/95 dark:bg-black/95 backdrop-blur-xl py-4 border-b border-emerald-500/20' : 'bg-white/60 dark:bg-black/60 backdrop-blur-md py-6 border-b border-black/5 dark:border-white/5'}`}>
       <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
-        <div className="text-2xl font-black tracking-tighter text-zinc-900 dark:text-white uppercase italic">
+        {/* Logo */}
+        <div className="text-2xl font-black tracking-tighter text-zinc-900 dark:text-white uppercase italic flex-1">
           GEETH<span className="text-emerald-500">.</span>
         </div>
-        <div className="hidden md:flex gap-8 items-center">
+        
+        {/* Links (Centered) */}
+        <div className="hidden lg:flex gap-8 items-center justify-center">
           {links.map((link) => (
             <a key={link} href={`#${link.toLowerCase()}`} className="text-[10px] uppercase tracking-[0.3em] font-bold text-zinc-600 dark:text-gray-300 hover:text-zinc-900 dark:hover:text-white transition-all">
               {link}
             </a>
           ))}
+        </div>
 
+        {/* Actions (Right) */}
+        <div className="hidden md:flex gap-6 lg:gap-8 items-center justify-end flex-1">
           <button onClick={toggleTheme} className="text-zinc-500 dark:text-gray-300 hover:text-zinc-900 dark:hover:text-white transition-colors">
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
 
-          <a href="#contact" className="bg-zinc-900 dark:bg-white text-white dark:text-black px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-500 dark:hover:text-white transition-all">
+          <a href="#contact" className="bg-zinc-900 dark:bg-white text-white dark:text-black px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-500 dark:hover:text-white transition-all flex-shrink-0">
             Let's Talk
           </a>
         </div>
+
+        {/* Mobile menu toggle */}
         <div className="md:hidden flex items-center gap-4">
           <button onClick={toggleTheme} className="text-zinc-900 dark:text-white">
             {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
@@ -126,7 +141,7 @@ const Hero = () => {
 
           <div className="mt-4 md:mt-8 max-w-3xl text-center relative z-30 px-6">
             <p className="text-lg md:text-2xl text-zinc-600 dark:text-gray-400 font-medium leading-relaxed mb-12 italic tracking-tight">
-              Leading teams and managing projects taught me why quality-first thinking matters that's what's driving me toward <span className="text-zinc-900 dark:text-white font-bold">software testing and QA</span>. It's the same instinct behind mastering <span className="text-zinc-900 dark:text-white font-bold">Generative AI</span> for real businesses.
+              Leading teams and delivering projects from the ground up taught me that the real challenge isn't just building something it's understanding what people actually need and making it work for them. That's what's pulling me toward <span className="text-zinc-900 dark:text-white font-bold">Business Analysis</span> and <span className="text-zinc-900 dark:text-white font-bold">UI/UX design</span>. It's the same instinct behind mastering <span className="text-zinc-900 dark:text-white font-bold">Generative AI</span> for real businesses.
             </p>
 
             <div className="flex flex-col gap-10 items-center justify-center">
@@ -191,10 +206,10 @@ const Education = () => (
 const Skills = () => {
   const skills = [
     {
-      title: 'QA & Testing (Learning)', icon: Target,
+      title: 'Business Analysis (Learning)', icon: Target,
       gradient: 'from-teal-400 to-emerald-600', color: 'text-teal-600 dark:text-teal-400',
-      tags: ['SQL Basics', 'API Testing (Postman)', 'Test Case Design', 'Bug Reporting'],
-      subtitle: "Actively building foundational knowledge in software testing"
+      tags: ['Requirements Gathering', 'Stakeholder Management', 'Process Modeling', 'BABOK Fundamentals'],
+      subtitle: "Actively building foundational knowledge in Business Analysis"
     },
     {
       title: 'Full-Stack & App Dev', icon: Code,
@@ -273,7 +288,7 @@ const Skills = () => {
 const Interests = () => {
   const interests = [
     { title: 'Generative AI & Automation', icon: Sparkles, desc: 'Exploring the frontiers of AI with ComfyUI, Flux, and Qwen.' },
-    { title: 'Software Quality & Testing', icon: Target, desc: 'Quality-first mindset. Deeply interested in QA methodologies.' },
+    { title: 'Business Analysis & Strategy', icon: Target, desc: 'Bridging technical delivery with stakeholder needs and process design.' },
     { title: 'UI/UX & Digital Design', icon: Palette, desc: 'Bridging engineering and aesthetics with Figma and Affinity.' },
     { title: 'Community Leadership', icon: Users, desc: 'Dedicated to giving back to the tech community via IEEE.' }
   ];
@@ -299,44 +314,14 @@ const Interests = () => {
   );
 };
 
-const ExperienceItem = ({ id, projectName, position, org, year }) => {
-  return (
-    <RevealOnScroll>
-      <div className="group py-4 border-b border-zinc-200 dark:border-white/10 flex flex-col md:flex-row md:items-center justify-between hover:bg-emerald-50/50 dark:hover:bg-emerald-500/5 hover:px-6 transition-all duration-300 rounded-xl">
-        <div className="flex items-center gap-6">
-          <span className="text-zinc-400 dark:text-zinc-700 font-mono text-xl group-hover:text-emerald-500 dark:group-hover:text-emerald-400 w-8">{id}</span>
-          <div>
-            <h3 className="text-2xl md:text-4xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter group-hover:translate-x-2 transition-transform duration-500">
-              {projectName}
-            </h3>
-            <div className="mt-2">
-              <p className="text-emerald-600 dark:text-emerald-400/90 font-bold uppercase tracking-[0.2em] text-[12px] group-hover:text-emerald-700 dark:group-hover:text-white transition-colors italic">
-                {position} {org ? `• ${org}` : ''}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="mt-4 md:mt-0 md:text-right pl-14 md:pl-0">
-          <div className="inline-block px-4 py-1.5 rounded-full border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-white font-mono text-xs uppercase tracking-widest shadow-sm group-hover:border-emerald-300 dark:group-hover:border-emerald-500/30 transition-colors">
-            {year}
-          </div>
-        </div>
-      </div>
-    </RevealOnScroll>
-  );
-};
-
 const Experience = () => {
   const experiences = [
-    { id: '01', projectName: 'IEEE Computer Society of SLTC', position: 'Vice-Chairperson', year: 'Completed', org: '' },
-    { id: '02', projectName: 'Master Designer', position: 'Marketing & Promotion Head', year: 'Completed', org: 'SLTC Media Unit' },
-    { id: '03', projectName: 'IEEE Computer Society of SLTC', position: 'Logistics Sub-Committee Head', year: '2024 - 2025', org: 'IEEE CS' },
-    { id: '04', projectName: 'IEEE CodeMania V5.0', position: 'Co-chair', year: '2024', org: 'IEEE CS' },
-    { id: '05', projectName: 'IEEE Day 2025', position: 'Coordination Team Head', year: '2025', org: 'IEEE CS' },
-    { id: '06', projectName: 'Arduino Challenge 2025', position: 'Program Team Head', year: '2025', org: 'IEEE CS' },
-    { id: '07', projectName: 'Decode Xtreme 2024', position: 'Program Team Head', year: '2024', org: 'IEEE CS' },
-    { id: '08', projectName: 'Git Genius 2024', position: 'Program Team Head', year: '2024', org: 'IEEE CS' },
-    { id: '09', projectName: 'Colors Night 2024', position: 'Program Team Member', year: '2024', org: 'SLTC' }
+    { title: 'Vice-Chairperson', org: 'IEEE Computer Society of SLTC', status: 'Present' },
+    { title: 'Logistics Sub-Committee Head', org: 'IEEE Computer Society of SLTC', status: '2024–2025' },
+    { title: 'Co-Chair', org: 'IEEE Codemania V5.0', status: 'Completed' },
+    { title: 'Coordination Team Head', org: 'IEEE Day 2025', status: 'Completed' },
+    { title: 'Program Team Head', org: 'Arduino Challenge 2025 / Decode Xtreme 2024 / Git Genius 2024', status: 'Completed' },
+    { title: 'Marketing & Promotion Head, Master Designer', org: 'SLTC Media Unit', status: 'Completed' }
   ];
 
   return (
@@ -344,15 +329,43 @@ const Experience = () => {
       <div className="max-w-7xl mx-auto px-8">
         <RevealOnScroll>
           <div className="mb-20">
-            <span className="text-emerald-600 dark:text-emerald-500 font-mono text-sm uppercase tracking-widest mb-4 block italic tracking-[0.5em]">Career Path & Leadership</span>
+            <span className="text-emerald-600 dark:text-emerald-500 font-mono text-sm uppercase tracking-widest mb-4 block italic tracking-[0.5em]">LEADERSHIP & VOLUNTEERING</span>
             <h2 className="text-6xl md:text-[7.5rem] font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter leading-none">Experience</h2>
           </div>
         </RevealOnScroll>
 
-        <div className="flex flex-col gap-2">
-          {experiences.map((e) => (
-            <ExperienceItem key={e.id} {...e} />
-          ))}
+        <div className="grid lg:grid-cols-2 gap-16 items-start">
+          {/* Left Column: List */}
+          <div className="flex flex-col gap-4">
+            {experiences.map((exp, i) => (
+              <RevealOnScroll key={i} delay={i * 100}>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 bg-white dark:bg-zinc-900/30 rounded-[2rem] border border-zinc-200 dark:border-white/5 shadow-sm hover:border-emerald-300 dark:hover:border-emerald-500/30 transition-all group">
+                  <div>
+                    <h3 className="text-xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tight group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors mb-1">
+                      {exp.title}
+                    </h3>
+                    <p className="text-zinc-600 dark:text-gray-400 font-bold uppercase tracking-[0.1em] text-xs">
+                      {exp.org}
+                    </p>
+                  </div>
+                  <div className="inline-block px-4 py-1.5 rounded-full border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-950 text-zinc-600 dark:text-white font-mono text-[10px] uppercase tracking-widest shadow-sm self-start md:self-auto flex-shrink-0">
+                    {exp.status}
+                  </div>
+                </div>
+              </RevealOnScroll>
+            ))}
+          </div>
+
+          {/* Right Column: Photo Gallery */}
+          <RevealOnScroll delay={300} className="h-full">
+            <div className="grid grid-cols-2 gap-4 h-full content-center">
+              {[exp1, exp2, exp3, exp4, exp5, exp6].map((imgPath, index) => (
+                <div key={index} className={`relative bg-zinc-200 dark:bg-zinc-800 rounded-[2rem] overflow-hidden flex items-center justify-center border border-zinc-300 dark:border-white/5 shadow-md aspect-square ${index % 2 !== 0 ? 'translate-y-8' : ''}`}>
+                  <img src={imgPath} alt={`Experience ${index + 1}`} className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+          </RevealOnScroll>
         </div>
       </div>
     </section>
@@ -400,31 +413,22 @@ const CertificatesAndProjects = () => {
       name: "IEEE Membership",
       desc: "Long-term volunteering member since 2024",
       issuer: "IEEE",
-      year: "2026"
+      year: "2026",
+      link: "/certificates/ieee-membership.pdf"
     },
     {
       name: "IEEE Computer Society Membership",
       desc: "Vice-Chairperson, IEEE Computer Society of SLTC",
       issuer: "IEEE Computer Society",
-      year: "2026"
+      year: "2026",
+      link: "/certificates/ieee-computer-society.pdf"
     },
     {
-      name: "Introduction to Software Testing",
-      desc: "Foundational course covering software testing concepts, types, and QA processes",
+      name: "Business Analysis Basics",
+      desc: "Foundational course covering business analysis concepts and processes",
       issuer: "Simplilearn SkillUp",
-      year: "2026"
-    },
-    {
-      name: "Automation Testing for Beginners",
-      desc: "Introductory course on automation testing fundamentals and tools",
-      issuer: "Simplilearn SkillUp",
-      year: "2026"
-    },
-    {
-      name: "Software Testing with Generative AI",
-      desc: "Explored the role of Generative AI in test automation, bug detection, and QA workflows",
-      issuer: "Simplilearn SkillUp",
-      year: "2026"
+      year: "2026",
+      link: "/certificates/business-analysis-basics.pdf"
     }
   ];
 
@@ -512,8 +516,13 @@ const CertificatesAndProjects = () => {
                       <p className="text-zinc-600 dark:text-gray-400 text-sm mb-1">{cert.desc}</p>
                       <p className="text-zinc-400 dark:text-gray-500 text-[10px] font-black uppercase tracking-widest">{cert.issuer}</p>
                     </div>
-                    <div className="text-zinc-400 dark:text-zinc-500 font-mono text-sm uppercase tracking-widest mt-2 md:mt-0 flex-shrink-0 text-right">
-                      {cert.year}
+                    <div className="flex flex-col md:items-end justify-between gap-3 mt-4 md:mt-0 flex-shrink-0">
+                      <div className="text-zinc-400 dark:text-zinc-500 font-mono text-sm uppercase tracking-widest text-left md:text-right">
+                        {cert.year}
+                      </div>
+                      <a href={cert.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900 text-[10px] font-bold text-zinc-600 dark:text-white uppercase tracking-widest hover:border-emerald-500 hover:text-emerald-600 dark:hover:border-emerald-500/50 dark:hover:text-emerald-400 transition-all shadow-sm">
+                        View Certificate <ExternalLink size={12} />
+                      </a>
                     </div>
                   </div>
                 </RevealOnScroll>
