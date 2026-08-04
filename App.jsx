@@ -414,21 +414,21 @@ const CertificatesAndProjects = () => {
       desc: "Long-term volunteering member since 2024",
       issuer: "IEEE",
       year: "2026",
-      link: "/certificates/ieee-membership.pdf"
+      image: "/certificates/cert1.jpg"
     },
     {
       name: "IEEE Computer Society Membership",
       desc: "Vice-Chairperson, IEEE Computer Society of SLTC",
       issuer: "IEEE Computer Society",
       year: "2026",
-      link: "/certificates/ieee-computer-society.pdf"
+      image: "/certificates/cert2.jpg"
     },
     {
       name: "Business Analysis Basics",
       desc: "Foundational course covering business analysis concepts and processes",
       issuer: "Simplilearn SkillUp",
       year: "2026",
-      link: "/certificates/business-analysis-basics.pdf"
+      image: "/certificates/cert3.jpg"
     }
   ];
 
@@ -508,8 +508,14 @@ const CertificatesAndProjects = () => {
               {certificates.map((cert, i) => (
                 <RevealOnScroll key={i} delay={i * 100}>
                   <div className="flex flex-col md:flex-row md:items-center gap-4 p-6 bg-white dark:bg-zinc-950 rounded-2xl border border-zinc-100 dark:border-white/5 hover:border-emerald-300 dark:hover:border-emerald-500/30 transition-colors">
-                    <div className="w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center flex-shrink-0">
-                      <FileText className="text-emerald-600 dark:text-emerald-400" size={20} />
+                    <div className="w-24 h-16 bg-zinc-200 dark:bg-zinc-800 rounded-lg overflow-hidden flex-shrink-0 border border-zinc-300 dark:border-white/10 relative">
+                      <img 
+                        src={cert.image} 
+                        alt={cert.name}
+                        className="w-full h-full object-cover pointer-events-none select-none opacity-80 hover:opacity-100 transition-opacity"
+                        onContextMenu={(e) => e.preventDefault()}
+                        draggable="false"
+                      />
                     </div>
                     <div className="flex-grow">
                       <h4 className="text-lg font-bold text-zinc-900 dark:text-white mb-1">{cert.name}</h4>
@@ -520,9 +526,6 @@ const CertificatesAndProjects = () => {
                       <div className="text-zinc-400 dark:text-zinc-500 font-mono text-sm uppercase tracking-widest text-left md:text-right">
                         {cert.year}
                       </div>
-                      <a href={cert.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900 text-[10px] font-bold text-zinc-600 dark:text-white uppercase tracking-widest hover:border-emerald-500 hover:text-emerald-600 dark:hover:border-emerald-500/50 dark:hover:text-emerald-400 transition-all shadow-sm">
-                        View Certificate <ExternalLink size={12} />
-                      </a>
                     </div>
                   </div>
                 </RevealOnScroll>
