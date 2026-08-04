@@ -236,7 +236,7 @@ const Skills = () => {
       tags: ['CapCut', 'Motion Graphics']
     },
     {
-      title: 'Social Media', icon: Share2,
+      title: 'Social Media Handling', icon: Share2,
       gradient: 'from-purple-500 to-indigo-700', color: 'text-purple-600 dark:text-purple-400',
       tags: ['Instagram', 'Facebook', 'YouTube', 'Visual Strategy']
     },
