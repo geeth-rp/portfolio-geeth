@@ -6,7 +6,7 @@ import {
   CheckCircle2, Megaphone, Sun, Moon, FileText, Layout, ExternalLink
 } from 'lucide-react';
 import profileImg from './profile.png';
-import cvFile from './Geeth_CV_OG.pdf';
+// import cvFile from './Geeth_CV_OG.pdf'; // Removed in favor of public folder
 import exp1 from './exp1.jpg';
 import exp2 from './exp2.jpg';
 import exp3 from './exp3.jpg';
@@ -157,7 +157,7 @@ const Hero = () => {
                   <span className="relative text-white z-10 flex items-center gap-3 italic font-bold tracking-widest">CONNECT WITH ME <ArrowRight size={20} /></span>
                 </a>
 
-                <a href={cvFile} target="_blank" rel="noopener noreferrer" className="group relative px-12 py-6 rounded-full font-black text-sm uppercase tracking-[0.3em] overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white border border-zinc-200 dark:border-white/10 hover:border-emerald-500 dark:hover:border-emerald-500 flex items-center justify-center">
+                <a href="/Geeth_CV_OG.pdf" target="_blank" rel="noopener noreferrer" className="group relative px-12 py-6 rounded-full font-black text-sm uppercase tracking-[0.3em] overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white border border-zinc-200 dark:border-white/10 hover:border-emerald-500 dark:hover:border-emerald-500 flex items-center justify-center">
                   <span className="relative z-10 flex items-center gap-3 italic font-bold tracking-widest">VIEW CV <FileText size={20} className="text-emerald-500" /></span>
                 </a>
               </div>
