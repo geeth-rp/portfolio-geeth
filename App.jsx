@@ -13,6 +13,8 @@ import exp3 from './exp3.jpg';
 import exp4 from './exp4.jpg';
 import exp5 from './exp5.jpg';
 import exp6 from './exp6.jpg';
+import exp7 from './exp7.jpg';
+import exp8 from './exp8.jpg';
 
 import cert1 from './public/certificates/cert1.jpg';
 import cert2 from './public/certificates/cert2.jpg';
@@ -320,7 +322,7 @@ const Interests = () => {
 
 const Experience = () => {
   const experiences = [
-    { title: 'Vice-Chairperson', org: 'IEEE Computer Society of SLTC', status: 'Present' },
+    { title: 'Vice-Chairperson', org: 'IEEE Computer Society of SLTC', status: '2025 - 2026' },
     { title: 'Logistics Sub-Committee Head', org: 'IEEE Computer Society of SLTC', status: '2024–2025' },
     { title: 'Co-Chair', org: 'IEEE Codemania V5.0', status: 'Completed' },
     { title: 'Coordination Team Head', org: 'IEEE Day 2025', status: 'Completed' },
@@ -363,7 +365,7 @@ const Experience = () => {
           {/* Right Column: Photo Gallery */}
           <RevealOnScroll delay={300} className="h-full">
             <div className="grid grid-cols-2 gap-4 h-full content-center">
-              {[exp1, exp2, exp3, exp4, exp5, exp6].map((imgPath, index) => (
+              {[exp1, exp2, exp3, exp4, exp5, exp6, exp7, exp8].map((imgPath, index) => (
                 <div key={index} className={`relative bg-zinc-200 dark:bg-zinc-800 rounded-[2rem] overflow-hidden flex items-center justify-center border border-zinc-300 dark:border-white/5 shadow-md aspect-square ${index % 2 !== 0 ? 'translate-y-8' : ''}`}>
                   <img src={imgPath} alt={`Experience ${index + 1}`} className="w-full h-full object-cover" />
                 </div>
