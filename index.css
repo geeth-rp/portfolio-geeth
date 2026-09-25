@@ -1,3 +1,9 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+html {
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
