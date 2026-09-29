@@ -21,6 +21,123 @@ import cert2 from './public/certificates/cert2.jpg';
 import cert3 from './public/certificates/cert3.jpg';
 
 
+const InteractiveBackground = () => {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    let animationFrameId;
+    let particles = [];
+    const mouse = { x: -1000, y: -1000, radius: 120 };
+    const spacing = 36; 
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      init();
+    };
+
+    const handleMouseMove = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+    
+    const handleMouseOut = () => {
+      mouse.x = -1000;
+      mouse.y = -1000;
+    };
+
+    window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseout', handleMouseOut);
+
+    class Particle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.baseX = this.x;
+        this.baseY = this.y;
+        this.size = 1.5;
+      }
+      draw() {
+        ctx.fillStyle = '#10b981';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.fill();
+      }
+      update() {
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < mouse.radius) {
+          let force = (mouse.radius - distance) / mouse.radius;
+          let directionX = (dx / distance) * force * 5;
+          let directionY = (dy / distance) * force * 5;
+          this.x -= directionX;
+          this.y -= directionY;
+          this.size = 1.5 + (force * 2); 
+        } else {
+          if (this.x !== this.baseX) {
+            let dxBase = this.x - this.baseX;
+            this.x -= dxBase / 10;
+          }
+          if (this.y !== this.baseY) {
+            let dyBase = this.y - this.baseY;
+            this.y -= dyBase / 10;
+          }
+          if (this.size !== 1.5) {
+             this.size -= (this.size - 1.5) / 10;
+          }
+        }
+        this.draw();
+      }
+    }
+
+    const init = () => {
+      particles = [];
+      const cols = Math.floor(canvas.width / spacing);
+      const rows = Math.floor(canvas.height / spacing);
+      
+      const offsetX = (canvas.width - cols * spacing) / 2;
+      const offsetY = (canvas.height - rows * spacing) / 2;
+
+      for (let i = 0; i <= cols + 1; i++) {
+        for (let j = 0; j <= rows + 1; j++) {
+          particles.push(new Particle(offsetX + (i * spacing) - spacing/2, offsetY + (j * spacing) - spacing/2));
+        }
+      }
+    };
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+      }
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    resize();
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseout', handleMouseOut);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  return (
+    <canvas 
+      ref={canvasRef} 
+      className="fixed inset-0 pointer-events-none z-[-10] opacity-40 dark:opacity-60"
+    />
+  );
+};
+
 // Animation Hook for smooth reveal
 const RevealOnScroll = ({ children, delay = "0", className = "" }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -125,8 +242,27 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
 
 const Hero = () => {
   return (
-    <section id="profile" className="relative min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-black overflow-hidden px-6 pt-32 md:pt-40 pb-24 transition-colors duration-300">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-emerald-500/[0.05] dark:bg-emerald-500/[0.03] rounded-full blur-[180px] pointer-events-none"></div>
+    <section id="profile" className="relative min-h-screen flex flex-col items-center justify-center bg-transparent overflow-hidden px-6 pt-32 md:pt-40 pb-24 transition-colors duration-300">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-emerald-500/[0.05] dark:bg-emerald-500/[0.03] rounded-full blur-[180px] pointer-events-none z-0"></div>
+      
+      {/* Floating 3D-like GP Elements in Background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute top-[10%] left-[5%] text-[20vw] md:text-[12vw] font-black text-zinc-900/[0.07] dark:text-white/[0.07] select-none italic animate-float blur-[3px] transform -rotate-12 drop-shadow-2xl">
+          GP
+        </div>
+        <div className="absolute bottom-[15%] right-[5%] text-[25vw] md:text-[15vw] font-black text-zinc-900/[0.07] dark:text-white/[0.07] select-none italic animate-float-delayed blur-[4px] transform rotate-12 drop-shadow-2xl">
+          GP
+        </div>
+        <div className="absolute top-[40%] left-[75%] text-[15vw] md:text-[8vw] font-black text-emerald-500/[0.06] select-none italic animate-float blur-[6px] transform rotate-45 drop-shadow-2xl">
+          GP
+        </div>
+        <div className="absolute top-[70%] left-[10%] text-[18vw] md:text-[10vw] font-black text-zinc-900/[0.06] dark:text-white/[0.06] select-none italic animate-float-delayed blur-[5px] transform -rotate-6 drop-shadow-2xl hidden md:block">
+          GP
+        </div>
+        <div className="absolute top-[20%] left-[45%] text-[12vw] md:text-[6vw] font-black text-teal-500/[0.05] select-none italic animate-float blur-[8px] transform rotate-[30deg] drop-shadow-2xl hidden md:block">
+          GP
+        </div>
+      </div>
 
       <RevealOnScroll>
         <div className="flex flex-col items-center relative z-20 w-full">
@@ -169,6 +305,9 @@ const Hero = () => {
                 <a href="https://github.com/geeth-rp" target="_blank" rel="noopener noreferrer" className="text-zinc-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-white transition-colors flex items-center gap-3 uppercase text-[11px] tracking-[0.4em] font-black italic">
                   <Github size={20} /> GITHUB
                 </a>
+                <a href="https://www.hackerrank.com/profile/Geeth_rp" target="_blank" rel="noopener noreferrer" className="text-zinc-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-white transition-colors flex items-center gap-3 uppercase text-[11px] tracking-[0.4em] font-black italic">
+                  <Code size={20} /> HACKERRANK
+                </a>
               </div>
             </div>
           </div>
@@ -179,7 +318,7 @@ const Hero = () => {
 };
 
 const Education = () => (
-  <section id="education" className="py-32 bg-white dark:bg-zinc-950 transition-colors duration-300">
+  <section id="education" className="py-32 bg-transparent transition-colors duration-300">
     <div className="max-w-7xl mx-auto px-8">
       <RevealOnScroll>
         <div className="mb-20">
@@ -188,15 +327,15 @@ const Education = () => (
         </div>
       </RevealOnScroll>
       <div className="grid md:grid-cols-2 gap-8">
-        <div className="bg-zinc-50 dark:bg-zinc-900/50 p-12 rounded-[3.5rem] border border-zinc-200 dark:border-white/5 hover:border-emerald-500/30 transition-all group backdrop-blur-sm shadow-xl">
+        <div className="bg-white/70 dark:bg-zinc-900/50 backdrop-blur-xl p-12 rounded-[3.5rem] border border-white/50 dark:border-white/10 hover:border-emerald-500/30 transition-all group shadow-xl">
           <GraduationCap className="text-emerald-600 dark:text-emerald-500 mb-6" size={40} />
-          <h3 className="text-3xl font-black text-zinc-900 dark:text-white uppercase italic mb-2 leading-tight">BSc (Hons) in Software Engineering</h3>
+          <h3 className="text-3xl font-black text-zinc-900 dark:text-white uppercase italic mb-2 leading-tight">BSc (Hons) in Software Engineering (GPA: 3.12)</h3>
           <a href="https://sltc.ac.lk/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-widest text-xs mb-6 italic hover:text-emerald-500 dark:hover:text-emerald-300 underline underline-offset-4 decoration-emerald-500/40 transition-all inline-block">Sri Lanka Technological Campus</a>
           <div className="flex items-center gap-3 text-zinc-500 dark:text-gray-500 font-mono text-sm">
             <Calendar size={16} /> Expected: 2027
           </div>
         </div>
-        <div className="bg-zinc-50 dark:bg-zinc-900/50 p-12 rounded-[3.5rem] border border-zinc-200 dark:border-white/5 hover:border-blue-500/30 transition-all group backdrop-blur-sm shadow-xl">
+        <div className="bg-white/70 dark:bg-zinc-900/50 backdrop-blur-xl p-12 rounded-[3.5rem] border border-white/50 dark:border-white/10 hover:border-blue-500/30 transition-all group shadow-xl">
           <GraduationCap className="text-blue-600 dark:text-blue-500 mb-6" size={40} />
           <h3 className="text-3xl font-black text-zinc-900 dark:text-white uppercase italic mb-2 leading-tight">Secondary Education</h3>
           <a href="https://share.google/AYAHVEHQbg4GmOUvs" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 font-bold uppercase tracking-widest text-xs mb-6 italic hover:text-blue-500 dark:hover:text-blue-300 underline underline-offset-4 decoration-blue-500/40 transition-all inline-block">St. Thomas College Matale</a>
@@ -212,44 +351,39 @@ const Education = () => (
 const Skills = () => {
   const skills = [
     {
-      title: 'Business Analysis (Learning)', icon: Target,
+      title: 'Business Analysis', icon: Target,
       gradient: 'from-teal-400 to-emerald-600', color: 'text-teal-600 dark:text-teal-400',
       tags: ['Requirements Gathering', 'Stakeholder Management', 'Process Modeling', 'BABOK Fundamentals'],
-      subtitle: "Actively building foundational knowledge in Business Analysis"
-    },
-    {
-      title: 'Full-Stack & App Dev', icon: Code,
-      gradient: 'from-zinc-400 to-zinc-600 dark:from-zinc-500 dark:to-zinc-800', color: 'text-zinc-700 dark:text-white',
-      tags: ['Flutter', 'React', 'Node.js', 'Python', 'Dart', 'Tailwind CSS', 'MongoDB', 'Supabase', 'Figma']
-    },
-    {
-      title: 'Graphic Design', icon: Palette,
-      gradient: 'from-pink-500 to-rose-600', color: 'text-pink-600 dark:text-pink-400',
-      tags: ['Canva', 'Affinity Designer', 'Affinity Photo', 'Figma']
-    },
-    {
-      title: 'AI Design', icon: Sparkles,
-      gradient: 'from-emerald-400 to-cyan-500', color: 'text-emerald-600 dark:text-emerald-400',
-      tags: ['ComfyUI', 'Flux', 'Qwen', 'Z Image Turbo', 'Wan', 'NanoBanana', 'Veo', 'Kling Video']
-    },
-    {
-      title: 'Video Editing', icon: Video,
-      gradient: 'from-blue-500 to-indigo-600', color: 'text-blue-600 dark:text-blue-400',
-      tags: ['CapCut', 'Motion Graphics']
-    },
-    {
-      title: 'Social Media Handling', icon: Share2,
-      gradient: 'from-purple-500 to-indigo-700', color: 'text-purple-600 dark:text-purple-400',
-      tags: ['Instagram', 'Facebook', 'YouTube', 'Visual Strategy']
+      subtitle: "Bridging technical delivery with business strategy"
     },
     {
       title: 'Leadership', icon: Users,
       gradient: 'from-orange-400 to-red-500', color: 'text-orange-500 dark:text-orange-400',
       tags: ['Team Management', 'Event Planning', 'Project Planning']
+    },
+    {
+      title: 'BI & Data Tools', icon: Layers,
+      gradient: 'from-blue-400 to-indigo-600', color: 'text-blue-600 dark:text-blue-400',
+      tags: ['Power BI', 'Excel', 'SQL', 'Google Analytics']
+    },
+    {
+      title: 'Data & ML', icon: Brain,
+      gradient: 'from-purple-400 to-fuchsia-600', color: 'text-purple-600 dark:text-purple-400',
+      tags: ['Python', 'Pandas', 'NumPy', 'Scikit-learn', 'PyTorch']
+    },
+    {
+      title: 'Full-Stack & App Dev', icon: Code,
+      gradient: 'from-zinc-400 to-zinc-600 dark:from-zinc-500 dark:to-zinc-800', color: 'text-zinc-700 dark:text-white',
+      tags: ['Flutter', 'React', 'Node.js', 'Tailwind CSS', 'MongoDB', 'Supabase']
+    },
+    {
+      title: 'AI Design', icon: Sparkles,
+      gradient: 'from-emerald-400 to-cyan-500', color: 'text-emerald-600 dark:text-emerald-400',
+      tags: ['ComfyUI', 'Flux', 'Qwen', 'Z Image Turbo', 'Wan']
     }
   ];
   return (
-    <section id="skills" className="py-32 bg-gray-50 dark:bg-black transition-colors duration-300">
+    <section id="skills" className="py-32 bg-transparent transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-8">
         <RevealOnScroll>
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 gap-8">
@@ -261,10 +395,9 @@ const Skills = () => {
         </RevealOnScroll>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
           {skills.map((s, i) => {
-            const isLast = i === skills.length - 1;
             return (
-              <RevealOnScroll key={i} delay={i * 100} className={`h-full ${isLast ? 'lg:col-span-3 md:col-span-2' : ''}`}>
-                <div className="h-full bg-white dark:bg-zinc-900/30 p-10 rounded-[3.5rem] border border-zinc-200 dark:border-white/5 hover:border-emerald-500/30 dark:hover:border-emerald-500/30 transition-all group shadow-xl flex flex-col">
+              <RevealOnScroll key={i} delay={i * 100} className="h-full">
+                <div className="h-full bg-white/70 dark:bg-zinc-900/50 backdrop-blur-xl p-10 rounded-[3.5rem] border border-white/50 dark:border-white/10 hover:border-emerald-500/30 dark:hover:border-emerald-500/30 transition-all group shadow-xl flex flex-col">
                   <AppIcon icon={s.icon} gradient={s.gradient} color={s.color} />
                   <h3 className="text-2xl font-black text-zinc-900 dark:text-white mt-8 mb-2 uppercase italic tracking-tighter group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">{s.title}</h3>
                   {s.subtitle && (
@@ -299,7 +432,7 @@ const Interests = () => {
     { title: 'Community Leadership', icon: Users, desc: 'Dedicated to giving back to the tech community via IEEE.' }
   ];
   return (
-    <section id="interests" className="py-32 bg-white dark:bg-zinc-950 transition-colors duration-300">
+    <section id="interests" className="py-32 bg-transparent transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-8">
         <RevealOnScroll>
           <h2 className="text-6xl md:text-8xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter mb-24 text-center leading-none">Interests</h2>
@@ -322,16 +455,16 @@ const Interests = () => {
 
 const Experience = () => {
   const experiences = [
+    { title: 'Founder', org: 'AI Content & Business Solutions', status: 'Ongoing' },
     { title: 'Vice-Chairperson', org: 'IEEE Computer Society of SLTC', status: '2025 - 2026' },
     { title: 'Logistics Sub-Committee Head', org: 'IEEE Computer Society of SLTC', status: '2024–2025' },
     { title: 'Co-Chair', org: 'IEEE Codemania V5.0', status: 'Completed' },
     { title: 'Coordination Team Head', org: 'IEEE Day 2025', status: 'Completed' },
-    { title: 'Program Team Head', org: 'Arduino Challenge 2025 / Decode Xtreme 2024 / Git Genius 2024', status: 'Completed' },
-    { title: 'Marketing & Promotion Head, Master Designer', org: 'SLTC Media Unit', status: 'Completed' }
+    { title: 'Program Team Head', org: 'Arduino Challenge / Decode Xtreme / Git Genius', status: 'Completed' }
   ];
 
   return (
-    <section id="experience" className="py-32 bg-gray-50 dark:bg-black transition-colors duration-300">
+    <section id="experience" className="py-32 bg-transparent transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-8">
         <RevealOnScroll>
           <div className="mb-20">
@@ -345,7 +478,7 @@ const Experience = () => {
           <div className="flex flex-col gap-4">
             {experiences.map((exp, i) => (
               <RevealOnScroll key={i} delay={i * 100}>
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 bg-white dark:bg-zinc-900/30 rounded-[2rem] border border-zinc-200 dark:border-white/5 shadow-sm hover:border-emerald-300 dark:hover:border-emerald-500/30 transition-all group">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 bg-white/70 dark:bg-zinc-900/50 backdrop-blur-xl rounded-[2rem] border border-white/50 dark:border-white/10 shadow-xl hover:border-emerald-300 dark:hover:border-emerald-500/30 transition-all group">
                   <div>
                     <h3 className="text-xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tight group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors mb-1">
                       {exp.title}
@@ -366,8 +499,8 @@ const Experience = () => {
           <RevealOnScroll delay={300} className="h-full">
             <div className="grid grid-cols-2 gap-4 h-full content-center">
               {[exp1, exp2, exp3, exp4, exp5, exp6, exp7, exp8].map((imgPath, index) => (
-                <div key={index} className={`relative bg-zinc-200 dark:bg-zinc-800 rounded-[2rem] overflow-hidden flex items-center justify-center border border-zinc-300 dark:border-white/5 shadow-md aspect-square ${index % 2 !== 0 ? 'translate-y-8' : ''}`}>
-                  <img src={imgPath} alt={`Experience ${index + 1}`} className="w-full h-full object-cover" />
+                <div key={index} className={`relative bg-zinc-200 dark:bg-zinc-800 rounded-[2rem] overflow-hidden flex items-center justify-center border border-zinc-300 dark:border-white/5 shadow-md aspect-square group hover:scale-105 hover:z-10 transition-all duration-500 cursor-pointer ${index % 2 !== 0 ? 'translate-y-8' : ''}`}>
+                  <img src={imgPath} alt={`Experience ${index + 1}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 </div>
               ))}
             </div>
@@ -381,11 +514,35 @@ const Experience = () => {
 const CertificatesAndProjects = () => {
   const projects = [
     {
-      title: "Fellowship – AI Learning Assistant",
+      title: "Impact of Generative AI on Teenagers' Cognitive Development",
       category: "ACADEMIC PROJECT",
       status: "ONGOING",
-      desc: "AI-powered learning assistant that promotes critical thinking using Socratic questioning, adaptive reasoning, and personalized reflection.",
-      tags: ["FLUTTER", "PYTHON", "FLASK", "SUPABASE", "OPENAI API"]
+      desc: "Developing a metacognition-oriented AI agent using Socratic questioning and adaptive scaffolding to foster critical thinking in teenagers.",
+      tags: ["FLUTTER", "PYTHON (FLASK)", "SUPABASE", "OPENAI API", "GEMINI API"]
+    },
+    {
+      title: "SmartCare: Patient Readmission Prediction",
+      category: "ACADEMIC PROJECT",
+      status: "COMPLETED",
+      desc: "ML pipeline to predict 30-day hospital patient readmissions using Random Forest, Decision Tree, XGBoost, and KNN models on a 1,000-record clinical dataset. Applied SHAP for model explainability and deployed a Streamlit prototype for clinical decision support, achieving ROC-AUC of 0.942 with 100% recall.",
+      tags: ["PYTHON", "SCIKIT-LEARN", "XGBOOST", "SHAP", "PANDAS", "STREAMLIT"],
+      github: "https://github.com/omega-u20/SmartCare-HospitalManagement"
+    },
+    {
+      title: "OGBN-Arxiv GNN Node Classification",
+      category: "ACADEMIC PROJECT",
+      status: "COMPLETED",
+      desc: "Implemented and compared GCN and GAT models for node classification on a 169,343-node citation dataset. Achieved 54.6% test accuracy with explainability analysis via t-SNE embeddings and GAT attention weights, presented via an interactive Streamlit dashboard.",
+      tags: ["PYTHON", "PYTORCH", "PYTORCH GEOMETRIC", "SCIKIT-LEARN", "STREAMLIT", "GOOGLE COLAB"],
+      github: "https://github.com/geeth-rp/CCS4354-OGBN-Arxiv-GNN"
+    },
+    {
+      title: "Pixlore AI Studio",
+      category: "PERSONAL PROJECT",
+      status: "COMPLETED",
+      desc: "Built an AI-driven fashion platform enabling customers to browse and purchase tailored AI-generated product images and videos.",
+      tags: ["REACT 19", "VITE", "TYPESCRIPT", "TAILWIND CSS"],
+      live: "https://pixlore-web.vercel.app/"
     },
     {
       title: "Utopia – Smart Town Management",
@@ -394,52 +551,54 @@ const CertificatesAndProjects = () => {
       desc: "Smart city platform with a citizen mobile app and web dashboard for real-time reporting, public services, and emergency notifications.",
       tags: ["FLUTTER", "DART", "REACT", "NODE.JS", "JAVASCRIPT"],
       github: "https://github.com/omega-u20/utopia"
-    },
-    {
-      title: "LankaSmartMart",
-      category: "ACADEMIC PROJECT",
-      status: "COMPLETED",
-      desc: "Full-stack e-commerce platform featuring product management, secure authentication, shopping cart, and order processing.",
-      tags: ["REACT", "NODE.JS", "EXPRESS", "MONGODB", "JWT"],
-      github: "https://github.com/omega-u20/LankaSmartMart"
-    },
-    {
-      title: "Pixlore AI Studio",
-      category: "PERSONAL PROJECT",
-      status: "COMPLETED",
-      desc: "My personal AI business website showcasing creative AI services and custom AI-powered content generation solutions.",
-      tags: ["REACT", "TYPESCRIPT", "TAILWIND CSS", "VITE"],
-      github: "https://github.com/geeth-rp/Pixlore",
-      live: "https://pixlore-web.vercel.app"
     }
   ];
 
   const certificates = [
     {
-      name: "IEEE Membership",
-      desc: "Long-term volunteering member since 2024",
-      issuer: "IEEE",
-      year: "2026",
-      image: cert1
-    },
-    {
-      name: "IEEE Computer Society Membership",
-      desc: "Vice-Chairperson, IEEE Computer Society of SLTC",
-      issuer: "IEEE Computer Society",
-      year: "2026",
-      image: cert2
-    },
-    {
       name: "Business Analysis Basics",
       desc: "Foundational course covering business analysis concepts and processes",
       issuer: "Simplilearn SkillUp",
       year: "2026",
-      image: cert3
+      image: cert3,
+      link: "https://simpli-web.app.link/e/PsqS2x9iK6b"
+    },
+    {
+      name: "SQL (Basic)",
+      desc: "Demonstrated proficiency in basic SQL queries and data manipulation",
+      issuer: "HackerRank",
+      year: "2026",
+      image: cert1,
+      link: "https://www.hackerrank.com/certificates/8d37badcae27"
+    },
+    {
+      name: "Software Engineer Intern",
+      desc: "Certification for software engineering intern technical skills",
+      issuer: "HackerRank",
+      year: "2026",
+      image: cert2,
+      link: "https://www.hackerrank.com/certificates/3a4c8c02dac8"
+    },
+    {
+      name: "Certificate of Appreciation — Vice-Chairperson",
+      desc: "IEEE CS Student Branch Chapter of SLTC",
+      issuer: "IEEE CS",
+      year: "2025",
+      image: cert2,
+      link: "https://drive.google.com/file/d/1jLO6BqpjdSUvk0l3no3-NB6fjBd717Ba/view?usp=sharing"
+    },
+    {
+      name: "IEEE Membership",
+      desc: "IEEE Student Branch of SLTC",
+      issuer: "IEEE",
+      year: "2024",
+      image: cert1,
+      link: "https://drive.google.com/file/d/1td8-l1EJp5S5t-UdjpesT4918HUrOrdX/view?usp=sharing"
     }
   ];
 
   return (
-    <section className="py-32 bg-white dark:bg-zinc-950 transition-colors duration-300 border-t border-zinc-100 dark:border-white/5">
+    <section className="py-32 bg-transparent transition-colors duration-300 border-t border-zinc-100 dark:border-white/5">
       <div className="max-w-7xl mx-auto px-8">
 
         {/* Projects Section */}
@@ -454,7 +613,7 @@ const CertificatesAndProjects = () => {
           <div className="grid md:grid-cols-2 gap-8">
             {projects.map((p, i) => (
               <RevealOnScroll key={i} delay={i * 100} className="h-full">
-                <div className="h-full bg-zinc-50 dark:bg-zinc-900/50 p-10 rounded-[3rem] border border-zinc-200 dark:border-white/5 hover:border-emerald-500/30 transition-all group shadow-lg flex flex-col relative">
+                <div className="h-full bg-white/70 dark:bg-zinc-900/50 backdrop-blur-xl p-10 rounded-[3rem] border border-white/50 dark:border-white/10 hover:border-emerald-500/30 transition-all group shadow-xl flex flex-col relative">
                   <div className="flex justify-between items-start mb-6">
                     <div className="w-14 h-14 rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-white/10 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
                       <Layout className="text-emerald-600 dark:text-emerald-400" size={24} />
@@ -509,22 +668,25 @@ const CertificatesAndProjects = () => {
             </div>
           </RevealOnScroll>
 
-          <div className="bg-zinc-50 dark:bg-zinc-900/30 rounded-[3rem] border border-zinc-200 dark:border-white/5 p-8 md:p-12 shadow-xl">
+          <div className="bg-white/70 dark:bg-zinc-900/50 backdrop-blur-xl rounded-[3rem] border border-white/50 dark:border-white/10 p-8 md:p-12 shadow-xl">
             <div className="flex flex-col gap-6">
               {certificates.map((cert, i) => (
                 <RevealOnScroll key={i} delay={i * 100}>
-                  <div className="flex flex-col md:flex-row md:items-center gap-4 p-6 bg-white dark:bg-zinc-950 rounded-2xl border border-zinc-100 dark:border-white/5 hover:border-emerald-300 dark:hover:border-emerald-500/30 transition-colors">
+                  <a href={cert.link || "#"} target={cert.link ? "_blank" : "_self"} rel="noopener noreferrer" className="flex flex-col md:flex-row md:items-center gap-4 p-6 bg-white/60 dark:bg-black/40 backdrop-blur-md rounded-2xl border border-white/50 dark:border-white/5 hover:border-emerald-300 dark:hover:border-emerald-500/30 transition-all group block shadow-md">
                     <div className="w-24 h-16 bg-zinc-200 dark:bg-zinc-800 rounded-lg overflow-hidden flex-shrink-0 border border-zinc-300 dark:border-white/10 relative">
                       <img 
                         src={cert.image} 
                         alt={cert.name}
-                        className="w-full h-full object-cover pointer-events-none select-none opacity-80 hover:opacity-100 transition-opacity"
+                        className="w-full h-full object-cover pointer-events-none select-none opacity-80 group-hover:opacity-100 transition-opacity"
                         onContextMenu={(e) => e.preventDefault()}
                         draggable="false"
                       />
                     </div>
                     <div className="flex-grow">
-                      <h4 className="text-lg font-bold text-zinc-900 dark:text-white mb-1">{cert.name}</h4>
+                      <h4 className="text-lg font-bold text-zinc-900 dark:text-white mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors flex items-center gap-2">
+                        {cert.name}
+                        {cert.link && <ExternalLink size={14} className="text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity" />}
+                      </h4>
                       <p className="text-zinc-600 dark:text-gray-400 text-sm mb-1">{cert.desc}</p>
                       <p className="text-zinc-400 dark:text-gray-500 text-[10px] font-black uppercase tracking-widest">{cert.issuer}</p>
                     </div>
@@ -533,7 +695,7 @@ const CertificatesAndProjects = () => {
                         {cert.year}
                       </div>
                     </div>
-                  </div>
+                  </a>
                 </RevealOnScroll>
               ))}
             </div>
@@ -548,7 +710,7 @@ const CertificatesAndProjects = () => {
 
 const Contact = () => {
   return (
-    <section id="contact" className="py-32 bg-gray-50 dark:bg-zinc-950 relative overflow-hidden transition-colors duration-300">
+    <section id="contact" className="py-32 bg-transparent relative overflow-hidden transition-colors duration-300">
       <div className="absolute bottom-0 right-0 text-[20vw] font-black text-zinc-900/[0.03] dark:text-white/[0.02] pointer-events-none select-none uppercase italic leading-none translate-y-1/4">GP</div>
       <div className="max-w-7xl mx-auto px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-20">
@@ -591,6 +753,15 @@ const Contact = () => {
                   <div>
                     <div className="text-[10px] uppercase tracking-widest text-zinc-600 dark:text-gray-400 font-black mb-1 italic">Source Code</div>
                     <div className="text-xl text-zinc-900 dark:text-white font-bold group-hover:text-emerald-600 dark:group-hover:text-emerald-500 transition-colors">geeth-rp</div>
+                  </div>
+                </a>
+              </div>
+              <div className="flex items-center gap-6 group cursor-pointer">
+                <a href="https://www.hackerrank.com/profile/Geeth_rp" target="_blank" rel="noopener noreferrer" className="flex items-center gap-6">
+                  <AppIcon icon={Code} gradient="from-emerald-400 to-teal-600 dark:from-emerald-600 dark:to-teal-800" color="text-emerald-700 dark:text-white" />
+                  <div>
+                    <div className="text-[10px] uppercase tracking-widest text-zinc-600 dark:text-gray-400 font-black mb-1 italic">Problem Solving</div>
+                    <div className="text-xl text-zinc-900 dark:text-white font-bold group-hover:text-emerald-600 dark:group-hover:text-emerald-500 transition-colors">Geeth_rp</div>
                   </div>
                 </a>
               </div>
@@ -641,6 +812,7 @@ const Footer = () => (
       <div className="flex gap-10">
         <a href="https://linkedin.com/in/Geeth-Rangika-Pelpola" target="_blank" rel="noopener noreferrer" className="text-zinc-500 dark:text-gray-600 hover:text-emerald-600 dark:hover:text-white transition-colors"><Linkedin size={20} /></a>
         <a href="https://github.com/geeth-rp" target="_blank" rel="noopener noreferrer" className="text-zinc-500 dark:text-gray-600 hover:text-emerald-600 dark:hover:text-white transition-colors"><Github size={20} /></a>
+        <a href="https://www.hackerrank.com/profile/Geeth_rp" target="_blank" rel="noopener noreferrer" className="text-zinc-500 dark:text-gray-600 hover:text-emerald-600 dark:hover:text-white transition-colors"><Code size={20} /></a>
       </div>
     </div>
   </footer>
@@ -663,7 +835,8 @@ const App = () => {
   };
 
   return (
-    <div className="bg-gray-50 dark:bg-black text-zinc-900 dark:text-white font-sans selection:bg-emerald-500 selection:text-white overflow-x-hidden antialiased min-h-screen transition-colors duration-300">
+    <div className="text-zinc-900 dark:text-white font-sans selection:bg-emerald-500 selection:text-white overflow-x-hidden antialiased min-h-screen transition-colors duration-300">
+      <div className="fixed inset-0 z-[-20] bg-gray-50 dark:bg-black transition-colors duration-300 pointer-events-none" />
       <style>{`
         @keyframes gradient-xy {
           0%, 100% { background-position: 0% 50%; }
@@ -673,10 +846,21 @@ const App = () => {
           background-size: 200% 200%;
           animation: gradient-xy 6s ease-in-out infinite;
         }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-30px) rotate(5deg); }
+        }
+        .animate-float {
+          animation: float 8s ease-in-out infinite;
+        }
+        .animate-float-delayed {
+          animation: float 10s ease-in-out infinite 4s;
+        }
         html {
           scroll-behavior: smooth;
         }
       `}</style>
+      <InteractiveBackground />
       <Navbar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       <Hero />
       <Education />
