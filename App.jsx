@@ -554,46 +554,85 @@ const CertificatesAndProjects = () => {
     }
   ];
 
-  const certificates = [
+  const certificateCategories = [
     {
-      name: "Business Analysis Basics",
-      desc: "Foundational course covering business analysis concepts and processes",
-      issuer: "Simplilearn SkillUp",
-      year: "2026",
-      image: cert3,
-      link: "https://simpli-web.app.link/e/PsqS2x9iK6b"
+      title: "Business Analysis",
+      certificates: [
+        {
+          name: "SQL (Basic)",
+          desc: "Demonstrated proficiency in basic SQL queries and data manipulation",
+          issuer: "HackerRank",
+          year: "2026",
+          image: cert1,
+          link: "https://www.hackerrank.com/certificates/8d37badcae27"
+        },
+        {
+          name: "Business Analysis Basics",
+          desc: "Foundational course covering business analysis concepts and processes",
+          issuer: "Simplilearn SkillUp",
+          year: "2026",
+          image: cert3,
+          link: "https://simpli-web.app.link/e/PsqS2x9iK6b"
+        }
+      ]
     },
     {
-      name: "SQL (Basic)",
-      desc: "Demonstrated proficiency in basic SQL queries and data manipulation",
-      issuer: "HackerRank",
-      year: "2026",
-      image: cert1,
-      link: "https://www.hackerrank.com/certificates/8d37badcae27"
+      title: "UI/UX & AI Content Generation",
+      certificates: [
+        {
+          name: "React (Basic)",
+          desc: "Demonstrated proficiency in React fundamental concepts",
+          issuer: "HackerRank",
+          year: "2026",
+          image: cert1,
+          link: "https://www.hackerrank.com/certificates/112a45ce050c"
+        },
+        {
+          name: "Create Engaging Video with Google Vids",
+          desc: "Demonstrated proficiency in creating engaging videos using Google Vids",
+          issuer: "Simplilearn SkillUp",
+          year: "2026",
+          image: cert3,
+          link: "https://simpli-web.app.link/e/fuOGf36H06b"
+        },
+        {
+          name: "Introduction to Generative AI Studio",
+          desc: "Demonstrated proficiency in Generative AI Studio",
+          issuer: "Simplilearn SkillUp",
+          year: "2026",
+          image: cert3,
+          link: "https://simpli-web.app.link/e/AODVyeev26b"
+        }
+      ]
     },
     {
-      name: "Software Engineer Intern",
-      desc: "Certification for software engineering intern technical skills",
-      issuer: "HackerRank",
-      year: "2026",
-      image: cert2,
-      link: "https://www.hackerrank.com/certificates/3a4c8c02dac8"
-    },
-    {
-      name: "Certificate of Appreciation — Vice-Chairperson",
-      desc: "IEEE CS Student Branch Chapter of SLTC",
-      issuer: "IEEE CS",
-      year: "2025",
-      image: cert2,
-      link: "https://drive.google.com/file/d/1jLO6BqpjdSUvk0l3no3-NB6fjBd717Ba/view?usp=sharing"
-    },
-    {
-      name: "IEEE Membership",
-      desc: "IEEE Student Branch of SLTC",
-      issuer: "IEEE",
-      year: "2024",
-      image: cert1,
-      link: "https://drive.google.com/file/d/1td8-l1EJp5S5t-UdjpesT4918HUrOrdX/view?usp=sharing"
+      title: "Others",
+      certificates: [
+        {
+          name: "Software Engineer Intern",
+          desc: "Certification for software engineering intern technical skills",
+          issuer: "HackerRank",
+          year: "2026",
+          image: cert2,
+          link: "https://www.hackerrank.com/certificates/3a4c8c02dac8"
+        },
+        {
+          name: "Certificate of Appreciation — Vice-Chairperson",
+          desc: "IEEE CS Student Branch Chapter of SLTC",
+          issuer: "IEEE CS",
+          year: "2025",
+          image: cert2,
+          link: "https://drive.google.com/file/d/1jLO6BqpjdSUvk0l3no3-NB6fjBd717Ba/view?usp=sharing"
+        },
+        {
+          name: "IEEE Membership",
+          desc: "IEEE Student Branch of SLTC",
+          issuer: "IEEE",
+          year: "2024",
+          image: cert1,
+          link: "https://drive.google.com/file/d/1td8-l1EJp5S5t-UdjpesT4918HUrOrdX/view?usp=sharing"
+        }
+      ]
     }
   ];
 
@@ -668,37 +707,50 @@ const CertificatesAndProjects = () => {
             </div>
           </RevealOnScroll>
 
-          <div className="bg-white/70 dark:bg-zinc-900/50 backdrop-blur-xl rounded-[3rem] border border-white/50 dark:border-white/10 p-8 md:p-12 shadow-xl">
-            <div className="flex flex-col gap-6">
-              {certificates.map((cert, i) => (
-                <RevealOnScroll key={i} delay={i * 100}>
-                  <a href={cert.link || "#"} target={cert.link ? "_blank" : "_self"} rel="noopener noreferrer" className="flex flex-col md:flex-row md:items-center gap-4 p-6 bg-white/60 dark:bg-black/40 backdrop-blur-md rounded-2xl border border-white/50 dark:border-white/5 hover:border-emerald-300 dark:hover:border-emerald-500/30 transition-all group block shadow-md">
-                    <div className="w-24 h-16 bg-zinc-200 dark:bg-zinc-800 rounded-lg overflow-hidden flex-shrink-0 border border-zinc-300 dark:border-white/10 relative">
-                      <img 
-                        src={cert.image} 
-                        alt={cert.name}
-                        className="w-full h-full object-cover pointer-events-none select-none opacity-80 group-hover:opacity-100 transition-opacity"
-                        onContextMenu={(e) => e.preventDefault()}
-                        draggable="false"
-                      />
+          <div className="space-y-12">
+            {certificateCategories.map((category, catIndex) => (
+              category.certificates.length > 0 && (
+                <div key={catIndex}>
+                  <RevealOnScroll>
+                    <h3 className="text-2xl font-bold text-zinc-800 dark:text-zinc-200 uppercase tracking-wide mb-6 pl-4 border-l-4 border-emerald-500">
+                      {category.title}
+                    </h3>
+                  </RevealOnScroll>
+                  <div className="bg-white/70 dark:bg-zinc-900/50 backdrop-blur-xl rounded-[2rem] border border-white/50 dark:border-white/10 p-6 md:p-8 shadow-xl">
+                    <div className="flex flex-col gap-4">
+                      {category.certificates.map((cert, i) => (
+                        <RevealOnScroll key={cert.name} delay={i * 100}>
+                          <a href={cert.link || "#"} target={cert.link ? "_blank" : "_self"} rel="noopener noreferrer" className="flex flex-col md:flex-row md:items-center gap-4 p-5 bg-white/60 dark:bg-black/40 backdrop-blur-md rounded-2xl border border-white/50 dark:border-white/5 hover:border-emerald-300 dark:hover:border-emerald-500/30 transition-all group block shadow-md">
+                            <div className="w-20 h-14 bg-zinc-200 dark:bg-zinc-800 rounded-lg overflow-hidden flex-shrink-0 border border-zinc-300 dark:border-white/10 relative">
+                              <img 
+                                src={cert.image} 
+                                alt={cert.name}
+                                className="w-full h-full object-cover pointer-events-none select-none opacity-80 group-hover:opacity-100 transition-opacity"
+                                onContextMenu={(e) => e.preventDefault()}
+                                draggable="false"
+                              />
+                            </div>
+                            <div className="flex-grow">
+                              <h4 className="text-md font-bold text-zinc-900 dark:text-white mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors flex items-center gap-2">
+                                {cert.name}
+                                {cert.link && <ExternalLink size={14} className="text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity" />}
+                              </h4>
+                              <p className="text-zinc-600 dark:text-gray-400 text-xs mb-1">{cert.desc}</p>
+                              <p className="text-zinc-400 dark:text-gray-500 text-[10px] font-black uppercase tracking-widest">{cert.issuer}</p>
+                            </div>
+                            <div className="flex flex-col md:items-end justify-between gap-2 mt-3 md:mt-0 flex-shrink-0">
+                              <div className="text-zinc-400 dark:text-zinc-500 font-mono text-xs uppercase tracking-widest text-left md:text-right">
+                                {cert.year}
+                              </div>
+                            </div>
+                          </a>
+                        </RevealOnScroll>
+                      ))}
                     </div>
-                    <div className="flex-grow">
-                      <h4 className="text-lg font-bold text-zinc-900 dark:text-white mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors flex items-center gap-2">
-                        {cert.name}
-                        {cert.link && <ExternalLink size={14} className="text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity" />}
-                      </h4>
-                      <p className="text-zinc-600 dark:text-gray-400 text-sm mb-1">{cert.desc}</p>
-                      <p className="text-zinc-400 dark:text-gray-500 text-[10px] font-black uppercase tracking-widest">{cert.issuer}</p>
-                    </div>
-                    <div className="flex flex-col md:items-end justify-between gap-3 mt-4 md:mt-0 flex-shrink-0">
-                      <div className="text-zinc-400 dark:text-zinc-500 font-mono text-sm uppercase tracking-widest text-left md:text-right">
-                        {cert.year}
-                      </div>
-                    </div>
-                  </a>
-                </RevealOnScroll>
-              ))}
-            </div>
+                  </div>
+                </div>
+              )
+            ))}
           </div>
         </div>
 
