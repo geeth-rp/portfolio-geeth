@@ -5,20 +5,19 @@ import {
   Brain, Target, GraduationCap, Calendar, Menu, X, Star, Trophy,
   CheckCircle2, Megaphone, Sun, Moon, FileText, Layout, ExternalLink
 } from 'lucide-react';
-import profileImg from './profile.png';
-// import cvFile from './Geeth_CV_OG.pdf'; // Removed in favor of public folder
-import exp1 from './exp1.jpg';
-import exp2 from './exp2.jpg';
-import exp3 from './exp3.jpg';
-import exp4 from './exp4.jpg';
-import exp5 from './exp5.jpg';
-import exp6 from './exp6.jpg';
-import exp7 from './exp7.jpg';
-import exp8 from './exp8.jpg';
+import profileImg from './assets/profile/geeth_profile.png';
+import exp1 from './assets/experience/experience_1.jpg';
+import exp2 from './assets/experience/experience_2.jpg';
+import exp3 from './assets/experience/experience_3.jpg';
+import exp4 from './assets/experience/experience_4.jpg';
+import exp5 from './assets/experience/experience_5.jpg';
+import exp6 from './assets/experience/experience_6.jpg';
+import exp7 from './assets/experience/experience_7.jpg';
+import exp8 from './assets/experience/experience_8.jpg';
 
-import cert1 from './public/certificates/cert1.jpg';
-import cert2 from './public/certificates/cert2.jpg';
-import cert3 from './public/certificates/cert3.jpg';
+import certIeeeMember from './assets/certificates/ieee_membership_certificate.jpg';
+import certIeeeCs from './assets/certificates/ieee_cs_membership_certificate.jpg';
+import certSimplilearn from './assets/certificates/simplilearn_completion_certificate.jpg';
 
 
 const InteractiveBackground = () => {
@@ -287,15 +286,21 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-col gap-10 items-center justify-center">
-              <div className="flex flex-col md:flex-row gap-6">
-                <a href="#contact" className="group relative px-12 py-6 rounded-full font-black text-sm uppercase tracking-[0.3em] overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-2xl">
+              <div className="flex flex-col md:flex-row gap-4 md:gap-6 w-full justify-center items-center">
+                <a href="#contact" className="w-full md:w-auto group relative px-10 py-5 md:px-12 md:py-6 rounded-full font-black text-sm uppercase tracking-[0.3em] overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-2xl flex items-center justify-center flex-shrink-0">
                   <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 animate-gradient-xy"></div>
-                  <span className="relative text-white z-10 flex items-center gap-3 italic font-bold tracking-widest">CONNECT WITH ME <ArrowRight size={20} /></span>
+                  <span className="relative text-white z-10 flex items-center gap-3 italic font-bold tracking-widest whitespace-nowrap">CONNECT WITH ME <ArrowRight size={20} /></span>
                 </a>
 
-                <a href="/Geeth_CV_OG.pdf" target="_blank" rel="noopener noreferrer" className="group relative px-12 py-6 rounded-full font-black text-sm uppercase tracking-[0.3em] overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white border border-zinc-200 dark:border-white/10 hover:border-emerald-500 dark:hover:border-emerald-500 flex items-center justify-center">
-                  <span className="relative z-10 flex items-center gap-3 italic font-bold tracking-widest">VIEW CV <FileText size={20} className="text-emerald-500" /></span>
-                </a>
+                <div className="flex gap-4 w-full md:w-auto">
+                  <a href="/Geeth_CV_OG.pdf" target="_blank" rel="noopener noreferrer" className="flex-1 group relative px-6 md:px-8 py-5 md:py-6 rounded-full font-black text-sm uppercase tracking-[0.3em] overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white border border-zinc-200 dark:border-white/10 hover:border-emerald-500 dark:hover:border-emerald-500 flex items-center justify-center">
+                    <span className="relative z-10 flex items-center gap-2 italic font-bold tracking-widest text-[11px] md:text-sm whitespace-nowrap">CV (BA) <FileText size={18} className="text-emerald-500" /></span>
+                  </a>
+                  
+                  <a href="/Geeth_CV_UIUX.pdf" target="_blank" rel="noopener noreferrer" className="flex-1 group relative px-6 md:px-8 py-5 md:py-6 rounded-full font-black text-sm uppercase tracking-[0.3em] overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white border border-zinc-200 dark:border-white/10 hover:border-emerald-500 dark:hover:border-emerald-500 flex items-center justify-center">
+                    <span className="relative z-10 flex items-center gap-2 italic font-bold tracking-widest text-[11px] md:text-sm whitespace-nowrap">CV (UI/UX) <FileText size={18} className="text-emerald-500" /></span>
+                  </a>
+                </div>
               </div>
 
               <div className="flex gap-8 items-center justify-center">
@@ -357,14 +362,24 @@ const Skills = () => {
       subtitle: "Bridging technical delivery with business strategy"
     },
     {
-      title: 'Leadership', icon: Users,
-      gradient: 'from-orange-400 to-red-500', color: 'text-orange-500 dark:text-orange-400',
-      tags: ['Team Management', 'Event Planning', 'Project Planning']
+      title: 'UI/UX Design', icon: Palette,
+      gradient: 'from-pink-400 to-rose-600', color: 'text-pink-600 dark:text-pink-400',
+      tags: ['User Interface Design', 'User Experience Design', 'Wireframing', 'Prototyping', 'Design Systems']
     },
     {
-      title: 'BI & Data Tools', icon: Layers,
-      gradient: 'from-blue-400 to-indigo-600', color: 'text-blue-600 dark:text-blue-400',
-      tags: ['Power BI', 'Excel', 'SQL', 'Google Analytics']
+      title: 'AI Design', icon: Sparkles,
+      gradient: 'from-emerald-400 to-cyan-500', color: 'text-emerald-600 dark:text-emerald-400',
+      tags: ['ComfyUI', 'Flux', 'Qwen', 'Z Image Turbo', 'Wan', 'Kling AI', 'Minimax', 'Nanobanana', 'Krea 2']
+    },
+    {
+      title: 'Prompt Engineering', icon: Zap,
+      gradient: 'from-indigo-400 to-violet-600', color: 'text-indigo-600 dark:text-indigo-400',
+      tags: ['Text-to-Image', 'Text-to-Video', 'LLM Prompt Design', 'Workflow Automation']
+    },
+    {
+      title: 'Full-Stack & App Dev', icon: Code,
+      gradient: 'from-zinc-400 to-zinc-600 dark:from-zinc-500 dark:to-zinc-800', color: 'text-zinc-700 dark:text-white',
+      tags: ['Flutter', 'React', 'Node.js', 'Tailwind CSS', 'MongoDB', 'Supabase', 'TypeScript', 'Vite', 'HTML', 'CSS', 'LaTeX']
     },
     {
       title: 'Data & ML', icon: Brain,
@@ -372,14 +387,19 @@ const Skills = () => {
       tags: ['Python', 'Pandas', 'NumPy', 'Scikit-learn', 'PyTorch']
     },
     {
-      title: 'Full-Stack & App Dev', icon: Code,
-      gradient: 'from-zinc-400 to-zinc-600 dark:from-zinc-500 dark:to-zinc-800', color: 'text-zinc-700 dark:text-white',
-      tags: ['Flutter', 'React', 'Node.js', 'Tailwind CSS', 'MongoDB', 'Supabase']
+      title: 'Digital Marketing', icon: Megaphone,
+      gradient: 'from-yellow-400 to-amber-600', color: 'text-yellow-600 dark:text-yellow-400',
+      tags: ['Social Media Mgt', 'Content Strategy', 'Brand Identity', 'Campaign Planning', 'Instagram', 'TikTok', 'YouTube', 'Facebook', 'LinkedIn']
     },
     {
-      title: 'AI Design', icon: Sparkles,
-      gradient: 'from-emerald-400 to-cyan-500', color: 'text-emerald-600 dark:text-emerald-400',
-      tags: ['ComfyUI', 'Flux', 'Qwen', 'Z Image Turbo', 'Wan']
+      title: 'BI & Data Tools', icon: Layers,
+      gradient: 'from-blue-400 to-indigo-600', color: 'text-blue-600 dark:text-blue-400',
+      tags: ['Power BI', 'Excel', 'SQL', 'Google Analytics']
+    },
+    {
+      title: 'Leadership', icon: Users,
+      gradient: 'from-orange-400 to-red-500', color: 'text-orange-500 dark:text-orange-400',
+      tags: ['Team Management', 'Event Planning', 'Project Planning', 'Stakeholder Communication']
     }
   ];
   return (
@@ -455,7 +475,7 @@ const Interests = () => {
 
 const Experience = () => {
   const experiences = [
-    { title: 'Founder', org: 'AI Content & Business Solutions', status: 'Ongoing' },
+    { title: 'Founder', org: 'Pixlore AI Studio', status: 'Ongoing' },
     { title: 'Vice-Chairperson', org: 'IEEE Computer Society of SLTC', status: '2025 - 2026' },
     { title: 'Logistics Sub-Committee Head', org: 'IEEE Computer Society of SLTC', status: '2024–2025' },
     { title: 'Co-Chair', org: 'IEEE Codemania V5.0', status: 'Completed' },
@@ -559,11 +579,19 @@ const CertificatesAndProjects = () => {
       title: "Business Analysis",
       certificates: [
         {
+          name: "Power BI for Beginners",
+          desc: "Demonstrated proficiency in Power BI fundamentals and data visualization",
+          issuer: "Simplilearn SkillUp",
+          year: "2026",
+          image: certSimplilearn,
+          link: "https://simpli-web.app.link/e/mc8h2eQh76b"
+        },
+        {
           name: "SQL (Basic)",
           desc: "Demonstrated proficiency in basic SQL queries and data manipulation",
           issuer: "HackerRank",
           year: "2026",
-          image: cert1,
+          image: certIeeeMember,
           link: "https://www.hackerrank.com/certificates/8d37badcae27"
         },
         {
@@ -571,7 +599,7 @@ const CertificatesAndProjects = () => {
           desc: "Foundational course covering business analysis concepts and processes",
           issuer: "Simplilearn SkillUp",
           year: "2026",
-          image: cert3,
+          image: certSimplilearn,
           link: "https://simpli-web.app.link/e/PsqS2x9iK6b"
         }
       ]
@@ -584,7 +612,7 @@ const CertificatesAndProjects = () => {
           desc: "Demonstrated proficiency in React fundamental concepts",
           issuer: "HackerRank",
           year: "2026",
-          image: cert1,
+          image: certIeeeMember,
           link: "https://www.hackerrank.com/certificates/112a45ce050c"
         },
         {
@@ -592,7 +620,7 @@ const CertificatesAndProjects = () => {
           desc: "Demonstrated proficiency in creating engaging videos using Google Vids",
           issuer: "Simplilearn SkillUp",
           year: "2026",
-          image: cert3,
+          image: certSimplilearn,
           link: "https://simpli-web.app.link/e/fuOGf36H06b"
         },
         {
@@ -600,7 +628,7 @@ const CertificatesAndProjects = () => {
           desc: "Demonstrated proficiency in Generative AI Studio",
           issuer: "Simplilearn SkillUp",
           year: "2026",
-          image: cert3,
+          image: certSimplilearn,
           link: "https://simpli-web.app.link/e/AODVyeev26b"
         }
       ]
@@ -613,7 +641,7 @@ const CertificatesAndProjects = () => {
           desc: "Certification for software engineering intern technical skills",
           issuer: "HackerRank",
           year: "2026",
-          image: cert2,
+          image: certIeeeCs,
           link: "https://www.hackerrank.com/certificates/3a4c8c02dac8"
         },
         {
@@ -621,7 +649,7 @@ const CertificatesAndProjects = () => {
           desc: "IEEE CS Student Branch Chapter of SLTC",
           issuer: "IEEE CS",
           year: "2025",
-          image: cert2,
+          image: certIeeeCs,
           link: "https://drive.google.com/file/d/1jLO6BqpjdSUvk0l3no3-NB6fjBd717Ba/view?usp=sharing"
         },
         {
@@ -629,7 +657,7 @@ const CertificatesAndProjects = () => {
           desc: "IEEE Student Branch of SLTC",
           issuer: "IEEE",
           year: "2024",
-          image: cert1,
+          image: certIeeeMember,
           link: "https://drive.google.com/file/d/1td8-l1EJp5S5t-UdjpesT4918HUrOrdX/view?usp=sharing"
         }
       ]
