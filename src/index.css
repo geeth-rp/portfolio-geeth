@@ -103,6 +103,42 @@ a, button, [role="button"], input, textarea, select {
   animation: bubble-pop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Modern Topic Transition Animations */
+@keyframes section-laser-sweep {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.animate-laser-sweep {
+  animation: section-laser-sweep 3s ease-in-out infinite;
+}
+
+/* Smooth reveal utility */
+.reveal-init {
+  opacity: 0;
+  transform: translateY(32px) scale(0.97);
+  filter: blur(8px);
+  will-change: transform, opacity, filter;
+  transition: opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 900ms cubic-bezier(0.16, 1, 0.3, 1),
+              filter 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-active {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+  filter: blur(0px) !important;
+}
+
 /* Accessible reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {

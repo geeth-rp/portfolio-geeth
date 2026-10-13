@@ -140,8 +140,8 @@ const InteractiveBackground = () => {
   );
 };
 
-// Animation Component for ArtCraft-inspired smooth reveal
-const RevealOnScroll = ({ children, delay = "0", className = "", direction = "up" }) => {
+// Animation Component for ArtCraft-inspired smooth cinematic reveal
+const RevealOnScroll = ({ children, delay = "0", className = "", direction = "up", once = true }) => {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef(null);
 
@@ -150,33 +150,75 @@ const RevealOnScroll = ({ children, delay = "0", className = "", direction = "up
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.unobserve(entry.target);
+          if (once) observer.unobserve(entry.target);
+        } else if (!once) {
+          setIsVisible(false);
         }
       },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.08, rootMargin: '0px 0px -50px 0px' }
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer && observer.disconnect();
-  }, []);
+  }, [once]);
 
   const getTransform = () => {
-    if (isVisible) return 'opacity-100 translate-y-0 scale-100 filter-none';
-    if (direction === 'left') return 'opacity-0 -translate-x-8 scale-[0.98] blur-[2px]';
-    if (direction === 'right') return 'opacity-0 translate-x-8 scale-[0.98] blur-[2px]';
-    return 'opacity-0 translate-y-8 scale-[0.98] blur-[2px]';
+    if (isVisible) return 'opacity-100 translate-y-0 translate-x-0 scale-100 blur-0';
+    if (direction === 'left') return 'opacity-0 -translate-x-12 scale-[0.96] blur-[6px]';
+    if (direction === 'right') return 'opacity-0 translate-x-12 scale-[0.96] blur-[6px]';
+    if (direction === 'down') return 'opacity-0 -translate-y-12 scale-[0.96] blur-[6px]';
+    return 'opacity-0 translate-y-12 scale-[0.96] blur-[6px]';
   };
 
   return (
     <div
       ref={ref}
       style={{
-        transitionDuration: '800ms',
+        transitionDuration: '950ms',
         transitionDelay: `${delay}ms`,
         transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)'
       }}
-      className={`transition-all will-change-[transform,opacity] ${getTransform()} ${className}`}
+      className={`transition-all will-change-[transform,opacity,filter] ${getTransform()} ${className}`}
     >
       {children}
+    </div>
+  );
+};
+
+// Modern Topic Section Divider Component with glowing HUD tracker & animated laser scan
+const TopicDivider = ({ number, title, subtitle }) => {
+  const [inView, setInView] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setInView(true);
+      },
+      { threshold: 0.2 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer && observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className="relative py-8 mb-8 select-none pointer-events-none">
+      <div className="flex items-center gap-4">
+        {/* Topic Index Pill */}
+        <div className={`font-mono text-[10px] font-black uppercase tracking-[0.25em] px-3 py-1 rounded-full border transition-all duration-700 ${inView ? 'border-emerald-500/60 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]' : 'border-zinc-300 dark:border-white/10 bg-zinc-100 dark:bg-white/5 text-zinc-500'}`}>
+          SEC // {number}
+        </div>
+
+        {/* Animated Laser Gradient Beam */}
+        <div className="flex-1 h-[1px] bg-zinc-200 dark:bg-white/10 relative overflow-hidden rounded-full">
+          <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-emerald-500 to-transparent transition-opacity duration-1000 ${inView ? 'opacity-100 animate-laser-sweep' : 'opacity-0'}`} />
+        </div>
+
+        {/* Status Pill */}
+        <div className="font-mono text-[9px] uppercase tracking-widest text-zinc-600 dark:text-zinc-400 hidden sm:flex items-center gap-1.5">
+          <span className={`w-1.5 h-1.5 rounded-full transition-colors duration-500 ${inView ? 'bg-emerald-500 animate-pulse' : 'bg-zinc-600'}`}></span>
+          {subtitle || 'SYSTEM READY'}
+        </div>
+      </div>
     </div>
   );
 };
@@ -585,6 +627,7 @@ const Hero = () => {
 const Education = () => (
   <section id="education" className="py-24 bg-transparent transition-colors duration-300">
     <div className="max-w-7xl mx-auto px-8">
+      <TopicDivider number="02" title="Education" subtitle="ACADEMIC BACKGROUND" />
       <RevealOnScroll>
         <div className="mb-14">
           <span className="text-emerald-600 dark:text-emerald-500 font-mono text-sm uppercase tracking-[0.4em] mb-3 block italic">Academic History</span>
@@ -742,6 +785,7 @@ const Skills = () => {
   return (
     <section id="skills" className="py-32 bg-transparent transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-8">
+        <TopicDivider number="03" title="Skills" subtitle="TECHNICAL & DOMAIN EXPERTISE" />
         <RevealOnScroll>
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 gap-8">
             <h2 className="text-6xl md:text-8xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter leading-none">Skill Set</h2>
@@ -803,6 +847,7 @@ const Interests = () => {
   return (
     <section id="interests" className="py-32 bg-transparent transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-8">
+        <TopicDivider number="04" title="Interests" subtitle="EXPLORATION & PASSION" />
         <RevealOnScroll>
           <h2 className="text-6xl md:text-8xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter mb-24 text-center leading-none">Interests</h2>
         </RevealOnScroll>
@@ -911,6 +956,7 @@ const Experience = () => {
   return (
     <section id="experience" className="py-32 bg-transparent transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-8">
+        <TopicDivider number="05" title="Experience" subtitle="LEADERSHIP & HONORS" />
         <RevealOnScroll>
           <div className="mb-20">
             <span className="text-emerald-600 dark:text-emerald-500 font-mono text-sm uppercase tracking-widest mb-4 block italic tracking-[0.5em]">HONORS, AWARDS & LEADERSHIP</span>
@@ -1334,7 +1380,8 @@ const CertificatesAndProjects = () => {
       <div className="max-w-7xl mx-auto px-8">
 
         {/* Projects Section */}
-        <div className="mb-24">
+        <div id="projects" className="mb-24">
+          <TopicDivider number="06" title="Projects" subtitle="ENGINEERING & BUSINESS PORTFOLIO" />
           <RevealOnScroll>
             <div className="mb-16">
               <span className="text-emerald-600 dark:text-emerald-500 font-mono text-sm uppercase tracking-widest mb-4 block italic tracking-[0.4em]">Portfolio</span>
@@ -1399,7 +1446,8 @@ const CertificatesAndProjects = () => {
         </div>
 
         {/* Certificates Section */}
-        <div>
+        <div id="certificates">
+          <TopicDivider number="07" title="Certificates" subtitle="VERIFIED CREDENTIALS & BADGES" />
           <RevealOnScroll>
             <div className="mb-14">
               <span className="text-emerald-600 dark:text-emerald-500 font-mono text-xs uppercase tracking-[0.3em] mb-3 block font-bold">
@@ -1496,6 +1544,7 @@ const Contact = () => {
     <section id="contact" className="py-32 bg-transparent relative overflow-hidden transition-colors duration-300">
       <div className="absolute bottom-0 right-0 text-[20vw] font-black text-zinc-900/[0.03] dark:text-white/[0.02] pointer-events-none select-none uppercase italic leading-none translate-y-1/4">GP</div>
       <div className="max-w-7xl mx-auto px-8 relative z-10">
+        <TopicDivider number="08" title="Contact" subtitle="DIRECT TRANSMISSION" />
         <div className="grid lg:grid-cols-2 gap-20">
           <RevealOnScroll>
             <h2 className="text-7xl md:text-9xl font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter mb-8 leading-[0.85]">CONNECT <br />WITH ME</h2>
