@@ -492,7 +492,7 @@ const Hero = () => {
 
           <div className="mt-4 md:mt-8 max-w-3xl text-center relative z-30 px-6">
             <p className="text-lg md:text-2xl text-zinc-600 dark:text-gray-400 font-medium leading-relaxed mb-12 italic tracking-tight">
-              Leading teams and delivering projects from the ground up taught me that the real challenge isn't just building something it's understanding what people actually need and making it work for them. That's what's pulling me toward <span className="text-zinc-900 dark:text-white font-bold">Business Analysis</span> and <span className="text-zinc-900 dark:text-white font-bold">UI/UX design</span>. It's the same instinct behind mastering <span className="text-zinc-900 dark:text-white font-bold">Generative AI</span> for real businesses.
+              Leading teams and delivering projects from the ground up taught me that the real challenge isn't just building something it's understanding what people actually need and making it work for them. That's what's pulling me toward <span className="text-zinc-900 dark:text-white font-bold">Project Management</span>, <span className="text-zinc-900 dark:text-white font-bold">Business Analysis</span>, and <span className="text-zinc-900 dark:text-white font-bold">UI/UX design</span>. It's the same instinct behind mastering <span className="text-zinc-900 dark:text-white font-bold">Generative AI</span> for real businesses.
             </p>
 
             <div className="flex flex-col gap-10 items-center justify-center">
