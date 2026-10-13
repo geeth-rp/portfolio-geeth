@@ -2,11 +2,113 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+:root {
+  --font-primary: 'Archivo', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
 html {
   user-select: none;
   -webkit-user-select: none;
+  scroll-behavior: smooth;
+  font-family: var(--font-primary);
 }
 
+/* Custom Emerald Arrow Cursor */
 * {
   cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%2310b981' stroke='white' stroke-width='1.5'%3E%3Cpath d='M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87c.45 0 .67-.54.35-.85L5.5 3.21z'/%3E%3C/svg%3E") 4 2, auto !important;
+}
+
+/* Interactive elements get pointer */
+a, button, [role="button"], input, textarea, select {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%2310b981' stroke='white' stroke-width='1.5'%3E%3Cpath d='M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87c.45 0 .67-.54.35-.85L5.5 3.21z'/%3E%3C/svg%3E") 4 2, pointer !important;
+}
+
+/* ArtCraft-style HUD Monospace Labels */
+.hud-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* ArtCraft subtle smooth spring transitions */
+.smooth-cubic {
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Card shimmer highlight on hover */
+.artcraft-card {
+  position: relative;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+  will-change: transform;
+}
+
+.artcraft-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Orbit ring rotation */
+@keyframes orbit-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes bubble-pop {
+  0% {
+    transform: scale(0.65);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-orbit-slow {
+  animation: orbit-slow 48s linear infinite;
+}
+
+.animate-orbit-reverse {
+  animation: orbit-reverse 48s linear infinite;
+}
+
+.animate-orbit-fast {
+  animation: orbit-slow 32s linear infinite;
+}
+
+.animate-orbit-fast-reverse {
+  animation: orbit-reverse 32s linear infinite;
+}
+
+.animate-bubble-pop {
+  animation: bubble-pop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Accessible reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
