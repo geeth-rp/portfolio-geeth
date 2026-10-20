@@ -8,8 +8,6 @@
 }
 
 html {
-  user-select: none;
-  -webkit-user-select: none;
   scroll-behavior: smooth;
   font-family: var(--font-primary);
 }

@@ -234,7 +234,8 @@ const ScrollSidebar = () => {
     { id: 'skills', label: 'SKILLS', num: '30' },
     { id: 'interests', label: 'INTERESTS', num: '40' },
     { id: 'experience', label: 'EXPERIENCE', num: '50' },
-    { id: 'contact', label: 'CONTACT', num: '60' },
+    { id: 'projects', label: 'PROJECTS', num: '60' },
+    { id: 'contact', label: 'CONTACT', num: '70' },
   ];
 
   useEffect(() => {
@@ -377,7 +378,7 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 30);
-      const sections = ['profile', 'education', 'skills', 'interests', 'experience', 'contact'];
+      const sections = ['profile', 'education', 'skills', 'interests', 'experience', 'projects', 'contact'];
       const scrollPos = window.scrollY + 250;
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
@@ -392,7 +393,7 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const links = ['Profile', 'Education', 'Skills', 'Interests', 'Experience', 'Contact'];
+  const links = ['Profile', 'Education', 'Skills', 'Interests', 'Experience', 'Projects', 'Contact'];
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-white/90 dark:bg-black/90 backdrop-blur-xl py-3 border-b border-emerald-500/20 shadow-sm' : 'bg-white/60 dark:bg-black/60 backdrop-blur-md py-5 border-b border-black/5 dark:border-white/5'}`}>
@@ -408,14 +409,14 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
         </div>
         
         {/* Links (Centered) with ArtCraft-inspired HUD styling & Sync Animation */}
-        <div className="hidden lg:flex gap-7 items-center justify-center">
+        <div className="hidden lg:flex gap-3 xl:gap-7 items-center justify-center">
           {links.map((link) => {
             const isActive = activeSection === link.toLowerCase();
             return (
               <a 
                 key={link} 
                 href={`#${link.toLowerCase()}`} 
-                className={`group relative py-1 text-[11px] font-mono uppercase tracking-[0.22em] font-semibold transition-all duration-300 ${isActive ? 'text-zinc-900 dark:text-white font-bold' : 'text-zinc-500 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-white'}`}
+                className={`group relative py-1 text-[11px] font-mono uppercase tracking-[0.14em] xl:tracking-[0.22em] font-semibold transition-all duration-300 ${isActive ? 'text-zinc-900 dark:text-white font-bold' : 'text-zinc-500 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-white'}`}
               >
                 <span className="relative z-10">{link}</span>
                 <span className={`absolute bottom-0 left-0 h-[2px] bg-emerald-500 transition-all duration-300 ease-out rounded-full ${isActive ? 'w-full shadow-[0_0_6px_#10b981]' : 'w-0 group-hover:w-full'}`}></span>
@@ -425,7 +426,7 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
         </div>
 
         {/* Actions (Right) */}
-        <div className="hidden md:flex gap-6 lg:gap-8 items-center justify-end flex-1">
+        <div className="hidden md:flex gap-6 lg:gap-4 xl:gap-8 items-center justify-end flex-1">
           <button 
             onClick={toggleTheme} 
             aria-label="Toggle theme"
@@ -436,7 +437,7 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
 
           <a 
             href="#contact" 
-            className="group relative bg-zinc-900 dark:bg-white text-white dark:text-black px-6 py-2.5 rounded-full font-mono font-bold text-[11px] uppercase tracking-[0.2em] hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-500 dark:hover:text-white transition-all duration-300 flex-shrink-0 shadow-sm hover:shadow-emerald-500/20 hover:shadow-lg active:scale-95"
+            className="group relative bg-zinc-900 dark:bg-white text-white dark:text-black px-6 lg:px-4 xl:px-6 py-2.5 rounded-full font-mono font-bold text-[11px] uppercase tracking-[0.2em] hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-500 dark:hover:text-white transition-all duration-300 flex-shrink-0 shadow-sm hover:shadow-emerald-500/20 hover:shadow-lg active:scale-95"
           >
             <span className="flex items-center gap-1.5">
               Let's Talk
@@ -960,7 +961,7 @@ const Experience = () => {
         <RevealOnScroll>
           <div className="mb-20">
             <span className="text-emerald-600 dark:text-emerald-500 font-mono text-sm uppercase tracking-widest mb-4 block italic tracking-[0.5em]">HONORS, AWARDS & LEADERSHIP</span>
-            <h2 className="text-6xl md:text-[7.5rem] font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter leading-none">Experience</h2>
+            <h2 className="text-5xl sm:text-6xl md:text-[7.5rem] font-black text-zinc-900 dark:text-white uppercase italic tracking-tighter leading-none">Experience</h2>
           </div>
         </RevealOnScroll>
 
