@@ -475,9 +475,10 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-white/90 dark:bg-black/90 backdrop-blur-xl py-3 border-b border-emerald-500/20 shadow-sm' : 'bg-white/60 dark:bg-black/60 backdrop-blur-md py-5 border-b border-black/5 dark:border-white/5'}`}>
-      <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
+      {/* lg+: 3-column grid (logo | links | actions) so the links can never slide under the buttons */}
+      <div className="max-w-7xl mx-auto px-8 flex justify-between items-center lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-6">
         {/* Logo */}
-        <div className="flex-1 flex items-center">
+        <div className="flex-1 flex items-center min-w-max">
           <a href="#profile" className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-zinc-200/80 dark:border-white/10 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-md hover:border-emerald-500/40 transition-all duration-300 shadow-sm hover:shadow-emerald-500/10">
             <span className="w-2 h-2 rounded-full bg-emerald-500 group-hover:scale-125 transition-transform duration-300 shadow-[0_0_8px_#10b981]" />
             <span className="text-xl font-black tracking-tight text-zinc-900 dark:text-white uppercase italic">
@@ -487,14 +488,14 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
         </div>
         
         {/* Links (Centered) with ArtCraft-inspired HUD styling & Sync Animation */}
-        <div className="hidden lg:flex gap-3 xl:gap-7 items-center justify-center">
+        <div className="hidden lg:flex gap-4 xl:gap-5 items-center justify-center">
           {links.map((link) => {
             const isActive = activeSection === link.toLowerCase();
             return (
               <a 
                 key={link} 
                 href={`#${link.toLowerCase()}`} 
-                className={`group relative py-1 text-[10px] xl:text-[11px] font-mono uppercase tracking-[0.06em] xl:tracking-[0.22em] font-semibold transition-all duration-300 ${isActive ? 'text-zinc-900 dark:text-white font-bold' : 'text-zinc-500 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-white'}`}
+                className={`group relative py-1 text-[10px] xl:text-[11px] font-mono uppercase tracking-[0.08em] xl:tracking-[0.12em] font-semibold whitespace-nowrap transition-all duration-300 ${isActive ? 'text-zinc-900 dark:text-white font-bold' : 'text-zinc-500 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-white'}`}
               >
                 <span className="relative z-10">{link}</span>
                 <span className={`absolute bottom-0 left-0 h-[2px] bg-emerald-500 transition-all duration-300 ease-out rounded-full ${isActive ? 'w-full shadow-[0_0_6px_#10b981]' : 'w-0 group-hover:w-full'}`}></span>
@@ -504,7 +505,7 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
         </div>
 
         {/* Actions (Right) */}
-        <div className="hidden md:flex gap-6 lg:gap-4 xl:gap-8 items-center justify-end flex-1">
+        <div className="hidden md:flex gap-6 lg:gap-4 xl:gap-6 items-center justify-end flex-1 min-w-max">
           <button 
             onClick={toggleTheme} 
             aria-label="Toggle theme"
