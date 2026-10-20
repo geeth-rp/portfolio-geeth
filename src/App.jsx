@@ -297,7 +297,8 @@ const ScrollSidebar = () => {
     { id: 'interests', label: 'INTERESTS', num: '40' },
     { id: 'experience', label: 'EXPERIENCE', num: '50' },
     { id: 'projects', label: 'PROJECTS', num: '60' },
-    { id: 'contact', label: 'CONTACT', num: '70' },
+    { id: 'certificates', label: 'CERTIFICATES', num: '70' },
+    { id: 'contact', label: 'CONTACT', num: '80' },
   ];
 
   useEffect(() => {
@@ -455,7 +456,7 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 30);
-      const sections = ['profile', 'education', 'skills', 'interests', 'experience', 'projects', 'contact'];
+      const sections = ['profile', 'education', 'skills', 'interests', 'experience', 'projects', 'certificates', 'contact'];
       const scrollPos = window.scrollY + 250;
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
@@ -470,7 +471,7 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const links = ['Profile', 'Education', 'Skills', 'Interests', 'Experience', 'Projects', 'Contact'];
+  const links = ['Profile', 'Education', 'Skills', 'Interests', 'Experience', 'Projects', 'Certificates', 'Contact'];
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-white/90 dark:bg-black/90 backdrop-blur-xl py-3 border-b border-emerald-500/20 shadow-sm' : 'bg-white/60 dark:bg-black/60 backdrop-blur-md py-5 border-b border-black/5 dark:border-white/5'}`}>
@@ -493,7 +494,7 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
               <a 
                 key={link} 
                 href={`#${link.toLowerCase()}`} 
-                className={`group relative py-1 text-[11px] font-mono uppercase tracking-[0.14em] xl:tracking-[0.22em] font-semibold transition-all duration-300 ${isActive ? 'text-zinc-900 dark:text-white font-bold' : 'text-zinc-500 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-white'}`}
+                className={`group relative py-1 text-[10px] xl:text-[11px] font-mono uppercase tracking-[0.06em] xl:tracking-[0.22em] font-semibold transition-all duration-300 ${isActive ? 'text-zinc-900 dark:text-white font-bold' : 'text-zinc-500 dark:text-gray-400 hover:text-zinc-900 dark:hover:text-white'}`}
               >
                 <span className="relative z-10">{link}</span>
                 <span className={`absolute bottom-0 left-0 h-[2px] bg-emerald-500 transition-all duration-300 ease-out rounded-full ${isActive ? 'w-full shadow-[0_0_6px_#10b981]' : 'w-0 group-hover:w-full'}`}></span>
