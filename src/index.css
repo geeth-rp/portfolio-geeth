@@ -8,6 +8,7 @@
 }
 
 html {
+  -webkit-tap-highlight-color: transparent;
   scroll-behavior: smooth;
   font-family: var(--font-primary);
 }
@@ -102,22 +103,16 @@ a, button, [role="button"], input, textarea, select {
 }
 
 /* Modern Topic Transition Animations */
+/* Sweeps in once when the section appears, then settles as a soft centred glow */
 @keyframes section-laser-sweep {
-  0% {
+  from {
     transform: translateX(-100%);
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(100%);
     opacity: 0;
   }
 }
 
 .animate-laser-sweep {
-  animation: section-laser-sweep 3s ease-in-out infinite;
+  animation: section-laser-sweep 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* Smooth reveal utility */
@@ -137,12 +132,106 @@ a, button, [role="button"], input, textarea, select {
   filter: blur(0px) !important;
 }
 
+/* Hero intro: one orchestrated page-load sequence (plays once) */
+.hero-letter {
+  display: inline-block;
+  animation: hero-letter 700ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+@keyframes hero-letter {
+  from { opacity: 0; transform: translateY(0.35em) rotate(4deg); }
+}
+
+.hero-photo {
+  animation: hero-photo 900ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+@keyframes hero-photo {
+  from { opacity: 0; transform: scale(0.92); }
+}
+
+.hero-ring {
+  stroke-dasharray: 1;
+  animation: hero-ring 1200ms cubic-bezier(0.65, 0, 0.35, 1) 300ms backwards;
+}
+@keyframes hero-ring {
+  from { stroke-dashoffset: 1; }
+}
+
+.hero-rise {
+  animation: hero-rise 800ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(16px); }
+}
+
+/* Cursor-following glow on cards (desktop) and press feedback (touch) */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), rgb(16 185 129 / 0.13), transparent 60%);
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .spotlight:hover::before {
+    opacity: 1;
+  }
+}
+@media (hover: none) {
+  .spotlight {
+    transition: scale 180ms ease, border-color 180ms ease;
+  }
+  .spotlight:active {
+    scale: 0.98;
+  }
+}
+
+/* Photo viewer: backdrop fades in, each photo fades in when switched */
+.viewer-backdrop {
+  animation: viewer-fade 300ms ease-out;
+}
+.viewer-img {
+  animation: viewer-fade 350ms ease-out;
+}
+@keyframes viewer-fade {
+  from { opacity: 0; }
+}
+
+/* Icons redraw their strokes when their card is hovered (desktop), pop when tapped (touch) */
+@media (hover: hover) and (pointer: fine) {
+  :is(.group, .group\/link):hover .icon-draw > * {
+    animation: icon-draw 900ms cubic-bezier(0.65, 0, 0.35, 1) both;
+  }
+}
+@keyframes icon-draw {
+  from { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  to { stroke-dasharray: 1; stroke-dashoffset: 0; }
+}
+
+@media (hover: none) {
+  :is(.group, .group\/link):active .icon-draw {
+    animation: icon-pop 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+}
+@keyframes icon-pop {
+  50% { transform: scale(1.18); }
+}
+
 /* Accessible reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
     scroll-behavior: auto !important;
   }
 }

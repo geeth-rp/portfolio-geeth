@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import {
   Github, Linkedin, Mail, Code, Code2, Palette, Users, Users2, ArrowRight,
   Camera, Smartphone, Zap, Sparkles, Layers, Video, Share2,
@@ -6,7 +6,9 @@ import {
   CheckCircle2, Megaphone, Sun, Moon, FileText, Layout, ExternalLink,
   BarChart3, LineChart, Cpu, Terminal, Database, TrendingUp, Compass, PenTool, LayoutGrid,
   Award, ShieldCheck, Bookmark,
-  ChevronLeft, ChevronRight, Grid
+  ChevronLeft, ChevronRight, Grid,
+  HeartPulse, Network, Building2, School, BookOpen, Atom, Clapperboard, WandSparkles,
+  Briefcase, Medal, BadgeCheck
 } from 'lucide-react';
 import profileImg from './assets/profile/geeth_profile.png';
 import exp1 from './assets/experience/experience_1.jpg';
@@ -29,15 +31,22 @@ const InteractiveBackground = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    let animationFrameId;
+    let animationFrameId = null;
     let particles = [];
     const mouse = { x: -1000, y: -1000, radius: 120 };
-    const spacing = 36; 
+    // Touch screens have no cursor to react to and reduced-motion users asked for stillness,
+    // so in both cases the grid is drawn once instead of on every frame.
+    const isStatic =
+      window.matchMedia('(hover: none), (pointer: coarse)').matches ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let spacing = 36;
 
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      spacing = window.innerWidth < 768 ? 44 : 36;
       init();
+      if (isStatic) drawOnce();
     };
 
     const handleMouseMove = (e) => {
@@ -113,6 +122,13 @@ const InteractiveBackground = () => {
       }
     };
 
+    const drawOnce = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].draw();
+      }
+    };
+
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (let i = 0; i < particles.length; i++) {
@@ -121,14 +137,26 @@ const InteractiveBackground = () => {
       animationFrameId = requestAnimationFrame(animate);
     };
 
+    const start = () => {
+      if (!isStatic && animationFrameId === null) animate();
+    };
+    const stop = () => {
+      if (animationFrameId !== null) cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    };
+    // Don't burn CPU/battery while the tab is in the background
+    const handleVisibility = () => (document.hidden ? stop() : start());
+    document.addEventListener('visibilitychange', handleVisibility);
+
     resize();
-    animate();
+    start();
 
     return () => {
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseout', handleMouseOut);
-      cancelAnimationFrame(animationFrameId);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      stop();
     };
   }, []);
 
@@ -138,6 +166,40 @@ const InteractiveBackground = () => {
       className="fixed inset-0 pointer-events-none z-[-10] opacity-40 dark:opacity-60"
     />
   );
+};
+
+// True on devices with a real mouse/trackpad where the visitor hasn't asked for reduced motion
+const canUseHoverMotion = () =>
+  window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
+  !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Pulls an element a few pixels toward the cursor while hovered (desktop only)
+const useMagnetic = (maxShift = 8) => {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !canUseHoverMotion()) return;
+
+    const handleMove = (e) => {
+      const r = el.getBoundingClientRect();
+      const x = ((e.clientX - (r.left + r.width / 2)) / (r.width / 2)) * maxShift;
+      const y = ((e.clientY - (r.top + r.height / 2)) / (r.height / 2)) * maxShift * 0.75;
+      el.style.translate = `${x}px ${y}px`;
+    };
+    const handleLeave = () => {
+      el.style.translate = '';
+    };
+
+    el.addEventListener('pointermove', handleMove);
+    el.addEventListener('pointerleave', handleLeave);
+    return () => {
+      el.removeEventListener('pointermove', handleMove);
+      el.removeEventListener('pointerleave', handleLeave);
+    };
+  }, [maxShift]);
+
+  return ref;
 };
 
 // Animation Component for ArtCraft-inspired smooth cinematic reveal
@@ -162,11 +224,11 @@ const RevealOnScroll = ({ children, delay = "0", className = "", direction = "up
   }, [once]);
 
   const getTransform = () => {
-    if (isVisible) return 'opacity-100 translate-y-0 translate-x-0 scale-100 blur-0';
-    if (direction === 'left') return 'opacity-0 -translate-x-12 scale-[0.96] blur-[6px]';
-    if (direction === 'right') return 'opacity-0 translate-x-12 scale-[0.96] blur-[6px]';
-    if (direction === 'down') return 'opacity-0 -translate-y-12 scale-[0.96] blur-[6px]';
-    return 'opacity-0 translate-y-12 scale-[0.96] blur-[6px]';
+    if (isVisible) return 'opacity-100 translate-y-0 translate-x-0 scale-100';
+    if (direction === 'left') return 'opacity-0 -translate-x-12 scale-[0.96] will-change-[transform,opacity]';
+    if (direction === 'right') return 'opacity-0 translate-x-12 scale-[0.96] will-change-[transform,opacity]';
+    if (direction === 'down') return 'opacity-0 -translate-y-12 scale-[0.96] will-change-[transform,opacity]';
+    return 'opacity-0 translate-y-12 scale-[0.96] will-change-[transform,opacity]';
   };
 
   return (
@@ -177,7 +239,7 @@ const RevealOnScroll = ({ children, delay = "0", className = "", direction = "up
         transitionDelay: `${delay}ms`,
         transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)'
       }}
-      className={`transition-all will-change-[transform,opacity,filter] ${getTransform()} ${className}`}
+      className={`transition-[opacity,translate,scale] ${getTransform()} ${className}`}
     >
       {children}
     </div>
@@ -346,6 +408,20 @@ const ScrollSidebar = () => {
   );
 };
 
+// Card icon with one consistent stroke weight. Each stroke gets pathLength=1 so CSS can
+// "redraw" the icon on hover (see .icon-draw in index.css).
+const DrawIcon = ({ icon: Icon, className = '', strokeWidth = 1.75, ...props }) => {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    ref.current
+      ?.querySelectorAll('path, line, circle, rect, polyline, polygon, ellipse')
+      .forEach((el) => el.setAttribute('pathLength', '1'));
+  }, [Icon]);
+
+  return <Icon ref={ref} className={`icon-draw ${className}`} strokeWidth={strokeWidth} {...props} />;
+};
+
 const AppIcon = ({ icon: Icon, gradient, color, id }) => (
   <div className="relative w-14 h-14 rounded-2xl p-[1px] shadow-sm group-hover:scale-105 group-hover:-translate-y-1 transition-all duration-500">
     {/* Micro-border frame with refined gradient on hover */}
@@ -361,10 +437,10 @@ const AppIcon = ({ icon: Icon, gradient, color, id }) => (
       <div className="absolute bottom-1 right-1 w-[1px] h-1.5 bg-zinc-300 dark:bg-white/20"></div>
       
       {/* Center Icon */}
-      <Icon
+      <DrawIcon
+        icon={Icon}
         className={`${color} relative z-10 transition-transform duration-500 group-hover:scale-110`}
         size={24}
-        strokeWidth={1.75}
       />
     </div>
   </div>
@@ -374,6 +450,7 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('profile');
   const [isOpen, setIsOpen] = useState(false);
+  const talkRef = useMagnetic(6);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -435,8 +512,9 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
             {isDarkMode ? <Sun size={19} className="hover:rotate-45 transition-transform duration-500 text-amber-400" /> : <Moon size={19} className="hover:-rotate-12 transition-transform duration-500 text-zinc-700" />}
           </button>
 
-          <a 
-            href="#contact" 
+          <a
+            ref={talkRef}
+            href="#contact"
             className="group relative bg-zinc-900 dark:bg-white text-white dark:text-black px-6 lg:px-4 xl:px-6 py-2.5 rounded-full font-mono font-bold text-[11px] uppercase tracking-[0.2em] hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-500 dark:hover:text-white transition-all duration-300 flex-shrink-0 shadow-sm hover:shadow-emerald-500/20 hover:shadow-lg active:scale-95"
           >
             <span className="flex items-center gap-1.5">
@@ -482,7 +560,21 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
   );
 };
 
+// Splits a word into letters that rise in one after another (hero intro only)
+const IntroLetters = ({ text, start = 0, step = 45 }) =>
+  [...text].map((ch, i) =>
+    ch === ' ' ? ' ' : (
+      <span key={i} aria-hidden="true" className="hero-letter" style={{ animationDelay: `${start + i * step}ms` }}>
+        {ch}
+      </span>
+    )
+  );
+
 const Hero = () => {
+  const connectRef = useMagnetic();
+  const cvBaRef = useMagnetic(6);
+  const cvUxRef = useMagnetic(6);
+
   return (
     <section id="profile" className="relative min-h-screen flex flex-col items-center justify-center bg-transparent overflow-hidden px-6 pt-32 md:pt-40 pb-24 transition-colors duration-300">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-emerald-500/[0.05] dark:bg-emerald-500/[0.03] rounded-full blur-[180px] pointer-events-none z-0"></div>
@@ -495,22 +587,17 @@ const Hero = () => {
         <div className="absolute bottom-[15%] right-[5%] text-[25vw] md:text-[15vw] font-black text-zinc-900/[0.07] dark:text-white/[0.07] select-none italic animate-float-delayed blur-[4px] transform rotate-12 drop-shadow-2xl">
           GP
         </div>
-        <div className="absolute top-[40%] left-[75%] text-[15vw] md:text-[8vw] font-black text-emerald-500/[0.06] select-none italic animate-float blur-[6px] transform rotate-45 drop-shadow-2xl">
-          GP
-        </div>
-        <div className="absolute top-[70%] left-[10%] text-[18vw] md:text-[10vw] font-black text-zinc-900/[0.06] dark:text-white/[0.06] select-none italic animate-float-delayed blur-[5px] transform -rotate-6 drop-shadow-2xl hidden md:block">
-          GP
-        </div>
-        <div className="absolute top-[20%] left-[45%] text-[12vw] md:text-[6vw] font-black text-teal-500/[0.05] select-none italic animate-float blur-[8px] transform rotate-[30deg] drop-shadow-2xl hidden md:block">
-          GP
-        </div>
       </div>
 
-      <RevealOnScroll>
+      <div className="w-full">
         <div className="flex flex-col items-center relative z-20 w-full">
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
             {/* Interactive Animated Avatar Frame */}
-            <div className="relative group/avatar">
+            <div className="relative group/avatar hero-photo">
+              {/* Intro ring that draws itself around the photo */}
+              <svg aria-hidden="true" viewBox="0 0 100 100" className="absolute -top-3 -left-3 w-[calc(100%+1.5rem)] h-[calc(100%+1.5rem)] -rotate-90 z-20 pointer-events-none text-emerald-500/80">
+                <circle cx="50" cy="50" r="49" fill="none" stroke="currentColor" strokeWidth="0.6" strokeLinecap="round" pathLength="1" className="hero-ring" />
+              </svg>
               {/* Outer pulsing emerald ambient ring */}
               <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-emerald-500/40 via-teal-400/20 to-emerald-600/40 blur-md opacity-70 group-hover/avatar:opacity-100 transition-opacity duration-700 animate-pulse pointer-events-none"></div>
               
@@ -525,23 +612,24 @@ const Hero = () => {
             </div>
 
             {/* Title with Subtle Dynamic Gradient Sweep on Hover */}
-            <h1 className="text-[13vw] sm:text-[14vw] md:text-[10vw] lg:text-[11vw] font-black text-zinc-900 dark:text-white leading-[0.88] tracking-tight uppercase select-none opacity-95 italic relative z-0 text-center md:text-left transition-all duration-700 hover:scale-[1.01] hover:drop-shadow-[0_0_35px_rgba(16,185,129,0.2)] pl-2 pr-4 py-2">
-              HI, I'M <br /> 
+            <h1 aria-label="Hi, I'm Geeth" className="text-[13vw] sm:text-[14vw] md:text-[10vw] lg:text-[11vw] font-black text-zinc-900 dark:text-white leading-[0.88] tracking-tight uppercase select-none opacity-95 italic relative z-0 text-center md:text-left transition-all duration-700 hover:scale-[1.01] hover:drop-shadow-[0_0_35px_rgba(16,185,129,0.2)] pl-2 pr-4 py-2">
+              <IntroLetters text="HI, I'M" /> <br />
               <span className="inline-block px-1 py-1 bg-gradient-to-r from-zinc-900 via-emerald-600 to-zinc-900 dark:from-white dark:via-emerald-400 dark:to-white bg-clip-text hover:text-transparent transition-all duration-500 animate-text-shimmer">
-                GEETH
+                <IntroLetters text="GEETH" start={350} step={55} />
               </span>
             </h1>
           </div>
 
           <div className="mt-4 md:mt-8 max-w-3xl text-center relative z-30 px-6">
-            <p className="text-lg md:text-2xl text-zinc-600 dark:text-gray-400 font-medium leading-relaxed mb-12 italic tracking-tight">
+            <p style={{ animationDelay: "700ms" }} className="hero-rise text-lg md:text-2xl text-zinc-600 dark:text-gray-400 font-medium leading-relaxed mb-12 italic tracking-tight">
               Leading teams and delivering projects from the ground up taught me that the real challenge isn't just building something it's understanding what people actually need and making it work for them. That's what's pulling me toward <span className="text-zinc-900 dark:text-white font-bold">Project Management</span>, <span className="text-zinc-900 dark:text-white font-bold">Business Analysis</span>, and <span className="text-zinc-900 dark:text-white font-bold">UI/UX design</span>. It's the same instinct behind mastering <span className="text-zinc-900 dark:text-white font-bold">Generative AI</span> for real businesses.
             </p>
 
             <div className="flex flex-col gap-10 items-center justify-center">
-              <div className="flex flex-col md:flex-row gap-4 md:gap-6 w-full justify-center items-center">
-                <a 
-                  href="#contact" 
+              <div style={{ animationDelay: "850ms" }} className="hero-rise flex flex-col md:flex-row gap-4 md:gap-6 w-full justify-center items-center">
+                <a
+                  ref={connectRef}
+                  href="#contact"
                   className="w-full md:w-auto group relative px-10 py-5 md:px-12 md:py-6 rounded-full font-black text-sm uppercase tracking-[0.3em] overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl flex items-center justify-center flex-shrink-0 hover:shadow-emerald-500/30 hover:shadow-2xl"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 animate-gradient-xy"></div>
@@ -553,8 +641,9 @@ const Hero = () => {
                 </a>
 
                 <div className="flex gap-4 w-full md:w-auto">
-                  <a 
-                    href="/Geeth_CV_OG.pdf" 
+                  <a
+                    ref={cvBaRef}
+                    href="/Geeth_CV_OG.pdf"
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="flex-1 group relative px-6 md:px-8 py-5 md:py-6 rounded-full font-black text-sm uppercase tracking-[0.3em] overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 shadow-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white border border-zinc-200 dark:border-white/10 hover:border-emerald-500 dark:hover:border-emerald-500 flex items-center justify-center hover:shadow-emerald-500/10"
@@ -565,8 +654,9 @@ const Hero = () => {
                     </span>
                   </a>
                   
-                  <a 
-                    href="/Geeth_CV_UIUX.pdf" 
+                  <a
+                    ref={cvUxRef}
+                    href="/Geeth_CV_UIUX.pdf"
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="flex-1 group relative px-6 md:px-8 py-5 md:py-6 rounded-full font-black text-sm uppercase tracking-[0.3em] overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 shadow-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white border border-zinc-200 dark:border-white/10 hover:border-emerald-500 dark:hover:border-emerald-500 flex items-center justify-center hover:shadow-emerald-500/10"
@@ -579,9 +669,9 @@ const Hero = () => {
                 </div>
               </div>
 
-              <div className="flex gap-8 items-center justify-center">
-                <a 
-                  href="https://linkedin.com/in/Geeth-Rangika-Pelpola" 
+              <div style={{ animationDelay: "1000ms" }} className="hero-rise flex gap-8 items-center justify-center">
+                <a
+                  href="https://linkedin.com/in/Geeth-Rangika-Pelpola"
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="group text-zinc-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-white transition-all duration-300 flex items-center gap-3 uppercase text-[11px] font-mono tracking-[0.3em] font-semibold italic"
@@ -620,7 +710,7 @@ const Hero = () => {
             </div>
           </div>
         </div>
-      </RevealOnScroll>
+      </div>
     </section>
   );
 };
@@ -639,11 +729,11 @@ const Education = () => (
       {/* Compact, Crisp ArtCraft Academic Grid */}
       <div className="grid md:grid-cols-3 gap-6 items-stretch">
         <RevealOnScroll delay={80} className="h-full">
-          <div className="h-full bg-white dark:bg-zinc-900/60 backdrop-blur-xl p-7 rounded-3xl border-2 border-zinc-200/90 dark:border-white/10 hover:border-emerald-500/60 dark:hover:border-emerald-500/50 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-400 ease-out group flex flex-col justify-between shadow-sm">
+          <div className="spotlight h-full bg-white dark:bg-zinc-900/60 backdrop-blur-xl p-7 rounded-3xl border-2 border-zinc-200/90 dark:border-white/10 hover:border-emerald-500/60 dark:hover:border-emerald-500/50 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-400 ease-out group flex flex-col justify-between shadow-sm">
             <div>
               <div className="flex items-center justify-between mb-5">
                 <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300/50 dark:border-emerald-500/20 flex items-center justify-center group-hover:scale-105 group-hover:rotate-3 transition-transform duration-300">
-                  <GraduationCap className="text-emerald-600 dark:text-emerald-400" size={24} />
+                  <DrawIcon icon={GraduationCap} className="text-emerald-600 dark:text-emerald-400" size={24} />
                 </div>
                 <div className="flex items-center gap-2 text-zinc-500 dark:text-gray-400 font-mono text-xs">
                   <Calendar size={14} className="text-emerald-500" /> Expected: 2027
@@ -665,11 +755,11 @@ const Education = () => (
         </RevealOnScroll>
 
         <RevealOnScroll delay={160} className="h-full">
-          <div className="h-full bg-white dark:bg-zinc-900/60 backdrop-blur-xl p-7 rounded-3xl border-2 border-zinc-200/90 dark:border-white/10 hover:border-blue-500/60 dark:hover:border-blue-500/50 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-400 ease-out group flex flex-col justify-between shadow-sm">
+          <div className="spotlight h-full bg-white dark:bg-zinc-900/60 backdrop-blur-xl p-7 rounded-3xl border-2 border-zinc-200/90 dark:border-white/10 hover:border-blue-500/60 dark:hover:border-blue-500/50 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-400 ease-out group flex flex-col justify-between shadow-sm">
             <div>
               <div className="flex items-center justify-between mb-5">
                 <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-300/50 dark:border-blue-500/20 flex items-center justify-center group-hover:scale-105 group-hover:rotate-3 transition-transform duration-300">
-                  <GraduationCap className="text-blue-600 dark:text-blue-400" size={24} />
+                  <DrawIcon icon={School} className="text-blue-600 dark:text-blue-400" size={24} />
                 </div>
                 <div className="flex items-center gap-2 text-zinc-500 dark:text-gray-400 font-mono text-xs">
                   <Calendar size={14} className="text-blue-500" /> Completed: 2020
@@ -694,11 +784,11 @@ const Education = () => (
         </RevealOnScroll>
 
         <RevealOnScroll delay={240} className="h-full">
-          <div className="h-full bg-white dark:bg-zinc-900/60 backdrop-blur-xl p-7 rounded-3xl border-2 border-zinc-200/90 dark:border-white/10 hover:border-teal-500/60 dark:hover:border-teal-500/50 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-teal-500/10 transition-all duration-400 ease-out group flex flex-col justify-between shadow-sm">
+          <div className="spotlight h-full bg-white dark:bg-zinc-900/60 backdrop-blur-xl p-7 rounded-3xl border-2 border-zinc-200/90 dark:border-white/10 hover:border-teal-500/60 dark:hover:border-teal-500/50 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-teal-500/10 transition-all duration-400 ease-out group flex flex-col justify-between shadow-sm">
             <div>
               <div className="flex items-center justify-between mb-5">
                 <div className="w-12 h-12 rounded-2xl bg-teal-50 dark:bg-teal-950/40 border border-teal-300/50 dark:border-teal-500/20 flex items-center justify-center group-hover:scale-105 group-hover:rotate-3 transition-transform duration-300">
-                  <GraduationCap className="text-teal-600 dark:text-teal-400" size={24} />
+                  <DrawIcon icon={BookOpen} className="text-teal-600 dark:text-teal-400" size={24} />
                 </div>
                 <div className="flex items-center gap-2 text-zinc-500 dark:text-gray-400 font-mono text-xs">
                   <Calendar size={14} className="text-teal-500" /> Completed: 2017
@@ -799,7 +889,7 @@ const Skills = () => {
           {skills.map((s, i) => {
             return (
               <RevealOnScroll key={i} delay={i * 75} className="h-full">
-                <div className="h-full bg-white/70 dark:bg-zinc-900/50 backdrop-blur-xl p-8 md:p-10 rounded-[2.5rem] border border-zinc-200/80 dark:border-white/10 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 hover:-translate-y-2 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500 ease-out group flex flex-col justify-between relative overflow-hidden">
+                <div className="spotlight h-full bg-white/70 dark:bg-zinc-900/50 backdrop-blur-xl p-8 md:p-10 rounded-[2.5rem] border border-zinc-200/80 dark:border-white/10 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 hover:-translate-y-2 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500 ease-out group flex flex-col justify-between relative overflow-hidden">
                   {/* Subtle top subtle edge indicator */}
                   <div className="absolute top-0 left-8 right-8 h-[1px] bg-gradient-to-r from-transparent via-zinc-300 dark:via-white/10 to-transparent group-hover:via-emerald-500/50 transition-colors duration-500"></div>
 
@@ -855,7 +945,7 @@ const Interests = () => {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {interests.map((item, i) => (
             <RevealOnScroll key={i} delay={i * 100}>
-              <div className="flex flex-col items-center text-center group p-6 rounded-3xl transition-all duration-500 hover:-translate-y-2 relative">
+              <div className="spotlight flex flex-col items-center text-center group p-6 rounded-3xl transition-all duration-500 hover:-translate-y-2 relative">
                 {/* Modern ArtCraft-style Visualized Tech Badge */}
                 <div className="relative mb-6">
                   {/* Subtle ambient emerald backglow on hover */}
@@ -874,10 +964,10 @@ const Interests = () => {
                     </span>
 
                     <div className="w-16 h-16 rounded-xl bg-zinc-50 dark:bg-black/50 flex items-center justify-center border border-zinc-100 dark:border-white/5 group-hover:bg-emerald-50/60 dark:group-hover:bg-emerald-950/30 transition-colors duration-500">
-                      <item.icon
+                      <DrawIcon
+                        icon={item.icon}
                         className="text-zinc-600 dark:text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 group-hover:scale-110 transition-all duration-500"
                         size={26}
-                        strokeWidth={1.8}
                       />
                     </div>
                   </div>
@@ -954,6 +1044,72 @@ const Experience = () => {
     { src: exp8, label: 'Leadership Summit', isPortrait: false }
   ];
 
+  const originRectRef = useRef(null);
+  const viewerCardRef = useRef(null);
+  const touchStartRef = useRef(null);
+  const isViewerOpen = selectedPhoto !== null;
+
+  const openPhoto = (index, e) => {
+    originRectRef.current = e.currentTarget.getBoundingClientRect();
+    setSelectedPhoto(index);
+  };
+  const closePhoto = () => setSelectedPhoto(null);
+  const showPrev = () => setSelectedPhoto((prev) => (prev === 0 ? photos.length - 1 : prev - 1));
+  const showNext = () => setSelectedPhoto((prev) => (prev === photos.length - 1 ? 0 : prev + 1));
+
+  // Keyboard controls + lock page scroll while the viewer is open
+  useEffect(() => {
+    if (!isViewerOpen) return;
+    const handleKey = (e) => {
+      if (e.key === 'Escape') closePhoto();
+      else if (e.key === 'ArrowLeft') showPrev();
+      else if (e.key === 'ArrowRight') showNext();
+    };
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKey);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener('keydown', handleKey);
+    };
+  }, [isViewerOpen]);
+
+  // Grow the viewer out of the thumbnail that was clicked
+  useLayoutEffect(() => {
+    const card = viewerCardRef.current;
+    const origin = originRectRef.current;
+    if (!isViewerOpen || !card) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!origin || reduceMotion || !card.animate) return;
+    const target = card.getBoundingClientRect();
+    const dx = origin.left + origin.width / 2 - (target.left + target.width / 2);
+    const dy = origin.top + origin.height / 2 - (target.top + target.height / 2);
+    const scale = Math.max(origin.width / target.width, 0.08);
+    card.animate(
+      [
+        { transform: `translate(${dx}px, ${dy}px) scale(${scale})`, opacity: 0.3 },
+        { transform: 'translate(0, 0) scale(1)', opacity: 1 }
+      ],
+      { duration: 520, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
+    );
+  }, [isViewerOpen]);
+
+  const handleTouchStart = (e) => {
+    const t = e.touches[0];
+    touchStartRef.current = { x: t.clientX, y: t.clientY };
+  };
+  const handleTouchEnd = (e) => {
+    const start = touchStartRef.current;
+    touchStartRef.current = null;
+    if (!start) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+      dx < 0 ? showNext() : showPrev();
+    }
+  };
+
   return (
     <section id="experience" className="py-32 bg-transparent transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-8">
@@ -970,7 +1126,7 @@ const Experience = () => {
           <div className="lg:col-span-6 flex flex-col gap-3.5 sm:gap-4 order-2 lg:order-1">
             {experiences.map((exp, i) => (
               <RevealOnScroll key={i} delay={i * 60}>
-                <div className="p-5 sm:p-7 bg-white/70 dark:bg-zinc-900/50 backdrop-blur-xl rounded-[1.75rem] sm:rounded-[2rem] border border-zinc-200/80 dark:border-white/10 shadow-lg hover:border-emerald-500/50 dark:hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/5 transition-all duration-300 ease-out group relative overflow-hidden">
+                <div className="spotlight p-5 sm:p-7 bg-white/70 dark:bg-zinc-900/50 backdrop-blur-xl rounded-[1.75rem] sm:rounded-[2rem] border border-zinc-200/80 dark:border-white/10 shadow-lg hover:border-emerald-500/50 dark:hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/5 transition-all duration-300 ease-out group relative overflow-hidden">
                   <div className="absolute top-0 left-6 right-6 h-[1px] bg-gradient-to-r from-transparent via-zinc-200 dark:via-white/10 to-transparent group-hover:via-emerald-500/50 transition-colors duration-500"></div>
 
                   <div className="flex flex-wrap sm:flex-nowrap items-start sm:items-center justify-between gap-2.5 mb-2">
@@ -1038,7 +1194,7 @@ const Experience = () => {
                         >
                           <div className="animate-orbit-reverse">
                             <button
-                              onClick={() => setSelectedPhoto(index)}
+                              onClick={(e) => openPhoto(index, e)}
                               className="group/card focus:outline-none transition-transform duration-300 hover:scale-115 sm:hover:scale-120 hover:z-30 cursor-pointer block relative"
                               title={item.label}
                             >
@@ -1087,7 +1243,7 @@ const Experience = () => {
                         >
                           <div className="animate-orbit-fast">
                             <button
-                              onClick={() => setSelectedPhoto(index + 4)}
+                              onClick={(e) => openPhoto(index + 4, e)}
                               className="group/card focus:outline-none transition-transform duration-300 hover:scale-115 sm:hover:scale-120 hover:z-30 cursor-pointer block relative"
                               title={item.label}
                             >
@@ -1132,13 +1288,17 @@ const Experience = () => {
         {/* ArtCraft Inspection Viewport Modal with All Photos Carousel */}
         {selectedPhoto !== null && (
           <div 
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur-2xl p-4 sm:p-6 select-none"
-            onClick={() => setSelectedPhoto(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Photo viewer"
+            className="viewer-backdrop fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur-2xl p-4 sm:p-6 select-none"
+            onClick={closePhoto}
           >
             {/* Top Close Button */}
             <div className="mb-3">
               <button
-                onClick={() => setSelectedPhoto(null)}
+                onClick={closePhoto}
+                aria-label="Close photo viewer"
                 className="w-11 h-11 rounded-full bg-white/10 dark:bg-zinc-900/90 text-white border border-white/20 hover:border-emerald-500 hover:bg-emerald-500 hover:scale-110 flex items-center justify-center transition-all duration-300 shadow-2xl focus:outline-none"
                 title="Close Viewport (Esc)"
               >
@@ -1147,18 +1307,24 @@ const Experience = () => {
             </div>
 
             {/* Modal Card with HUD Bezel (Adaptive 16:9 / 9:16 support without any image cropping) */}
-            <div 
-              className="relative max-w-4xl w-full bg-zinc-950/95 rounded-[2.5rem] border border-white/15 p-5 sm:p-6 shadow-2xl shadow-black/80 animate-bubble-pop overflow-hidden flex flex-col"
+            <div
+              ref={viewerCardRef}
+              className="relative max-w-4xl w-full bg-zinc-950/95 rounded-[2.5rem] border border-white/15 p-5 sm:p-6 shadow-2xl shadow-black/80 overflow-hidden flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="absolute top-0 left-12 right-12 h-[1px] bg-gradient-to-r from-transparent via-emerald-500/80 to-transparent"></div>
 
               {/* Main Image Stage (Contain mode so portrait 9:16 and landscape 16:9 never crop) */}
-              <div className="relative rounded-[2rem] overflow-hidden bg-black/95 h-[50vh] sm:h-[60vh] max-h-[580px] border border-white/10 shadow-2xl flex items-center justify-center group/stage">
+              <div
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+                className="relative rounded-[2rem] overflow-hidden bg-black/95 h-[50vh] sm:h-[60vh] max-h-[580px] border border-white/10 shadow-2xl flex items-center justify-center group/stage touch-pan-y"
+              >
                 <img
+                  key={selectedPhoto}
                   src={photos[selectedPhoto].src}
                   alt={photos[selectedPhoto].label}
-                  className="max-h-full max-w-full object-contain pointer-events-none select-none transition-all duration-500"
+                  className="viewer-img max-h-full max-w-full object-contain pointer-events-none select-none"
                   draggable="false"
                 />
 
@@ -1166,8 +1332,9 @@ const Experience = () => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    setSelectedPhoto((prev) => (prev === 0 ? photos.length - 1 : prev - 1));
+                    showPrev();
                   }}
+                  aria-label="Previous photo"
                   className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 hover:bg-emerald-500 text-white flex items-center justify-center border border-white/20 transition-all duration-300 focus:outline-none hover:scale-110"
                   title="Previous Photo"
                 >
@@ -1178,8 +1345,9 @@ const Experience = () => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    setSelectedPhoto((prev) => (prev === photos.length - 1 ? 0 : prev + 1));
+                    showNext();
                   }}
+                  aria-label="Next photo"
                   className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 hover:bg-emerald-500 text-white flex items-center justify-center border border-white/20 transition-all duration-300 focus:outline-none hover:scale-110"
                   title="Next Photo"
                 >
@@ -1247,6 +1415,7 @@ const CertificatesAndProjects = () => {
   const projects = [
     {
       title: "Impact of Generative AI on Teenagers' Cognitive Development",
+      icon: BrainCircuit,
       category: "ACADEMIC PROJECT",
       status: "ONGOING",
       desc: "Developing a metacognition-oriented AI agent using Socratic questioning and adaptive scaffolding to foster critical thinking in teenagers.",
@@ -1254,6 +1423,7 @@ const CertificatesAndProjects = () => {
     },
     {
       title: "SmartCare: Patient Readmission Prediction",
+      icon: HeartPulse,
       category: "ACADEMIC PROJECT",
       status: "COMPLETED",
       desc: "ML pipeline to predict 30-day hospital patient readmissions using Random Forest, Decision Tree, XGBoost, and KNN models on a 1,000-record clinical dataset. Applied SHAP for model explainability and deployed a Streamlit prototype for clinical decision support, achieving ROC-AUC of 0.942 with 100% recall.",
@@ -1262,6 +1432,7 @@ const CertificatesAndProjects = () => {
     },
     {
       title: "OGBN-Arxiv GNN Node Classification",
+      icon: Network,
       category: "ACADEMIC PROJECT",
       status: "COMPLETED",
       desc: "Implemented and compared GCN and GAT models for node classification on a 169,343-node citation dataset. Achieved 54.6% test accuracy with explainability analysis via t-SNE embeddings and GAT attention weights, presented via an interactive Streamlit dashboard.",
@@ -1270,6 +1441,7 @@ const CertificatesAndProjects = () => {
     },
     {
       title: "Pixlore AI Studio",
+      icon: Sparkles,
       category: "PERSONAL PROJECT",
       status: "COMPLETED",
       desc: "Built an AI-driven fashion platform enabling customers to browse and purchase tailored AI-generated product images and videos.",
@@ -1278,6 +1450,7 @@ const CertificatesAndProjects = () => {
     },
     {
       title: "Utopia – Smart Town Management",
+      icon: Building2,
       category: "ACADEMIC PROJECT",
       status: "COMPLETED",
       desc: "Smart city platform with a citizen mobile app and web dashboard for real-time reporting, public services, and emergency notifications.",
@@ -1292,6 +1465,7 @@ const CertificatesAndProjects = () => {
       certificates: [
         {
           name: "Power BI for Beginners",
+          icon: BarChart3,
           desc: "Demonstrated proficiency in Power BI fundamentals and data visualization",
           issuer: "Simplilearn SkillUp",
           year: "2026",
@@ -1300,6 +1474,7 @@ const CertificatesAndProjects = () => {
         },
         {
           name: "SQL (Basic)",
+          icon: Database,
           desc: "Demonstrated proficiency in basic SQL queries and data manipulation",
           issuer: "HackerRank",
           year: "2026",
@@ -1308,6 +1483,7 @@ const CertificatesAndProjects = () => {
         },
         {
           name: "Business Analysis Basics",
+          icon: Compass,
           desc: "Foundational course covering business analysis concepts and processes",
           issuer: "Simplilearn SkillUp",
           year: "2026",
@@ -1321,6 +1497,7 @@ const CertificatesAndProjects = () => {
       certificates: [
         {
           name: "React (Basic)",
+          icon: Atom,
           desc: "Demonstrated proficiency in React fundamental concepts",
           issuer: "HackerRank",
           year: "2026",
@@ -1329,6 +1506,7 @@ const CertificatesAndProjects = () => {
         },
         {
           name: "Create Engaging Video with Google Vids",
+          icon: Clapperboard,
           desc: "Demonstrated proficiency in creating engaging videos using Google Vids",
           issuer: "Simplilearn SkillUp",
           year: "2026",
@@ -1337,6 +1515,7 @@ const CertificatesAndProjects = () => {
         },
         {
           name: "Introduction to Generative AI Studio",
+          icon: WandSparkles,
           desc: "Demonstrated proficiency in Generative AI Studio",
           issuer: "Simplilearn SkillUp",
           year: "2026",
@@ -1350,6 +1529,7 @@ const CertificatesAndProjects = () => {
       certificates: [
         {
           name: "Software Engineer Intern",
+          icon: Briefcase,
           desc: "Certification for software engineering intern technical skills",
           issuer: "HackerRank",
           year: "2026",
@@ -1358,6 +1538,7 @@ const CertificatesAndProjects = () => {
         },
         {
           name: "Certificate of Appreciation — Vice-Chairperson",
+          icon: Medal,
           desc: "IEEE CS Student Branch Chapter of SLTC",
           issuer: "IEEE CS",
           year: "2025",
@@ -1366,6 +1547,7 @@ const CertificatesAndProjects = () => {
         },
         {
           name: "IEEE Membership",
+          icon: BadgeCheck,
           desc: "IEEE Student Branch of SLTC",
           issuer: "IEEE",
           year: "2024",
@@ -1393,11 +1575,11 @@ const CertificatesAndProjects = () => {
           <div className="grid md:grid-cols-2 gap-8">
             {projects.map((p, i) => (
               <RevealOnScroll key={i} delay={i * 90} className="h-full">
-                <div className="h-full bg-white/70 dark:bg-zinc-900/50 backdrop-blur-xl p-10 rounded-[3rem] border border-white/50 dark:border-white/10 hover:border-emerald-500/40 dark:hover:border-emerald-500/40 hover:-translate-y-2 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500 ease-out group flex flex-col justify-between relative">
+                <div className="spotlight h-full bg-white/70 dark:bg-zinc-900/50 backdrop-blur-xl p-10 rounded-[3rem] border border-white/50 dark:border-white/10 hover:border-emerald-500/40 dark:hover:border-emerald-500/40 hover:-translate-y-2 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500 ease-out group flex flex-col justify-between relative">
                   <div>
                     <div className="flex justify-between items-start mb-6">
                       <div className="w-14 h-14 rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-white/10 flex items-center justify-center shadow-sm group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
-                        <Layout className="text-emerald-600 dark:text-emerald-400" size={24} />
+                        <DrawIcon icon={p.icon || Layout} className="text-emerald-600 dark:text-emerald-400" size={24} />
                       </div>
                       <div className="flex flex-col items-end gap-2">
                         <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-500 dark:text-gray-400">
@@ -1484,7 +1666,7 @@ const CertificatesAndProjects = () => {
                           href={cert.link || "#"}
                           target={cert.link ? "_blank" : "_self"}
                           rel="noopener noreferrer"
-                          className="h-full flex flex-col justify-between p-6 bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl rounded-2xl border border-zinc-200/80 dark:border-white/10 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300 group relative overflow-hidden"
+                          className="spotlight h-full flex flex-col justify-between p-6 bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl rounded-2xl border border-zinc-200/80 dark:border-white/10 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300 group relative overflow-hidden"
                         >
                           {/* Top subtle line */}
                           <div className="absolute top-0 left-4 right-4 h-[1px] bg-gradient-to-r from-transparent via-zinc-200 dark:via-white/10 to-transparent group-hover:via-emerald-500/60 transition-colors duration-500"></div>
@@ -1493,7 +1675,7 @@ const CertificatesAndProjects = () => {
                             {/* Header row: Tech badge icon + Year Pill */}
                             <div className="flex items-center justify-between mb-4">
                               <div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-black/60 border border-zinc-200/90 dark:border-white/10 flex items-center justify-center text-zinc-600 dark:text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 group-hover:border-emerald-500/40 group-hover:bg-emerald-50/50 dark:group-hover:bg-emerald-950/20 transition-all duration-300 shadow-sm">
-                                <Award size={18} strokeWidth={2} />
+                                <DrawIcon icon={cert.icon || Award} size={18} />
                               </div>
                               <span className="font-mono text-[10px] font-bold text-zinc-600 dark:text-zinc-400 px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-white/5 border border-zinc-200/80 dark:border-white/10">
                                 {cert.year}
@@ -1541,6 +1723,8 @@ const CertificatesAndProjects = () => {
 
 
 const Contact = () => {
+  const submitRef = useMagnetic(5);
+
   return (
     <section id="contact" className="py-32 bg-transparent relative overflow-hidden transition-colors duration-300">
       <div className="absolute bottom-0 right-0 text-[20vw] font-black text-zinc-900/[0.03] dark:text-white/[0.02] pointer-events-none select-none uppercase italic leading-none translate-y-1/4">GP</div>
@@ -1601,7 +1785,7 @@ const Contact = () => {
             </div>
           </RevealOnScroll>
           <RevealOnScroll delay="200">
-            <div className="bg-white dark:bg-zinc-900/80 p-10 md:p-12 rounded-[4rem] border border-zinc-200 dark:border-white/10 relative overflow-hidden group shadow-2xl backdrop-blur-md hover:border-emerald-500/30 transition-all duration-500">
+            <div className="spotlight bg-white dark:bg-zinc-900/80 p-10 md:p-12 rounded-[4rem] border border-zinc-200 dark:border-white/10 relative overflow-hidden group shadow-2xl backdrop-blur-md hover:border-emerald-500/30 transition-all duration-500">
               <form action="https://formspree.io/f/mojgorrl" method="POST" className="space-y-8 relative z-10">
                 <div className="grid md:grid-cols-2 gap-8">
                   <div className="space-y-2">
@@ -1621,7 +1805,7 @@ const Contact = () => {
                   <label className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 dark:text-gray-500 font-bold block pl-2 italic">Message</label>
                   <textarea name="message" required rows="4" className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/5 rounded-2xl p-5 text-zinc-900 dark:text-white focus:outline-none focus:border-emerald-500/60 focus:ring-1 focus:ring-emerald-500/20 transition-all focus:bg-white dark:focus:bg-black/60 shadow-inner" placeholder="How can we build the future together?"></textarea>
                 </div>
-                <button type="submit" className="w-full bg-zinc-900 dark:bg-white text-white dark:text-black py-6 md:py-7 rounded-2xl font-mono font-bold uppercase tracking-[0.35em] text-[11px] hover:bg-emerald-600 dark:hover:bg-emerald-500 hover:text-white transition-all duration-300 shadow-xl group/btn overflow-hidden relative active:scale-[0.99]">
+                <button ref={submitRef} type="submit" className="w-full bg-zinc-900 dark:bg-white text-white dark:text-black py-6 md:py-7 rounded-2xl font-mono font-bold uppercase tracking-[0.35em] text-[11px] hover:bg-emerald-600 dark:hover:bg-emerald-500 hover:text-white transition-all duration-300 shadow-xl group/btn overflow-hidden relative active:scale-[0.99]">
                   <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000 ease-out pointer-events-none"></div>
                   <div className="relative z-10 flex items-center justify-center gap-3">
                     Launch Transmission <ArrowRight className="group-hover/btn:translate-x-2 transition-transform duration-300" />
@@ -1667,6 +1851,28 @@ const App = () => {
       root.classList.remove('dark');
     }
   }, [isDarkMode]);
+
+  useEffect(() => {
+    // iOS Safari only applies :active (tap feedback) once a touch listener exists
+    const noop = () => {};
+    document.addEventListener('touchstart', noop, { passive: true });
+
+    // Cursor glow: one shared listener feeds the pointer position to whichever .spotlight card is hovered
+    const handleMove = (e) => {
+      const card = e.target.closest?.('.spotlight');
+      if (!card) return;
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      card.style.setProperty('--my', `${e.clientY - r.top}px`);
+    };
+    const glow = canUseHoverMotion();
+    if (glow) window.addEventListener('pointermove', handleMove, { passive: true });
+
+    return () => {
+      document.removeEventListener('touchstart', noop);
+      if (glow) window.removeEventListener('pointermove', handleMove);
+    };
+  }, []);
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
