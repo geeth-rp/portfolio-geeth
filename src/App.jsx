@@ -3,7 +3,7 @@ import {
   Github, Linkedin, Mail, Code, Code2, Palette, Users, Users2, ArrowRight,
   Camera, Smartphone, Zap, Sparkles, Layers, Video, Share2,
   Brain, BrainCircuit, Target, GraduationCap, Calendar, Menu, X, Star, Trophy,
-  CheckCircle2, Megaphone, Sun, Moon, FileText, Layout, ExternalLink,
+  CheckCircle2, Megaphone, Sun, Moon, Layout, ExternalLink,
   BarChart3, LineChart, Cpu, Terminal, Database, TrendingUp, Compass, PenTool, LayoutGrid,
   Award, ShieldCheck, Bookmark,
   ChevronLeft, ChevronRight, Grid,
@@ -574,8 +574,6 @@ const IntroLetters = ({ text, start = 0, step = 45 }) =>
 
 const Hero = () => {
   const connectRef = useMagnetic();
-  const cvBaRef = useMagnetic(6);
-  const cvUxRef = useMagnetic(6);
 
   return (
     <section id="profile" className="relative min-h-screen flex flex-col items-center justify-center bg-transparent overflow-hidden px-6 pt-32 md:pt-40 pb-24 transition-colors duration-300">
@@ -641,34 +639,6 @@ const Hero = () => {
                     <ArrowRight size={20} className="group-hover:translate-x-1.5 transition-transform duration-300" />
                   </span>
                 </a>
-
-                <div className="flex gap-4 w-full md:w-auto">
-                  <a
-                    ref={cvBaRef}
-                    href="/Geeth_CV_OG.pdf"
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="flex-1 group relative px-6 md:px-8 py-5 md:py-6 rounded-full font-black text-sm uppercase tracking-[0.3em] overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 shadow-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white border border-zinc-200 dark:border-white/10 hover:border-emerald-500 dark:hover:border-emerald-500 flex items-center justify-center hover:shadow-emerald-500/10"
-                  >
-                    <span className="relative z-10 flex items-center gap-2 italic font-bold tracking-widest text-[11px] md:text-sm whitespace-nowrap">
-                      CV (BA) 
-                      <FileText size={18} className="text-emerald-500 group-hover:scale-110 group-hover:-translate-y-0.5 transition-transform duration-300" />
-                    </span>
-                  </a>
-                  
-                  <a
-                    ref={cvUxRef}
-                    href="/Geeth_CV_UIUX.pdf"
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="flex-1 group relative px-6 md:px-8 py-5 md:py-6 rounded-full font-black text-sm uppercase tracking-[0.3em] overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 shadow-xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white border border-zinc-200 dark:border-white/10 hover:border-emerald-500 dark:hover:border-emerald-500 flex items-center justify-center hover:shadow-emerald-500/10"
-                  >
-                    <span className="relative z-10 flex items-center gap-2 italic font-bold tracking-widest text-[11px] md:text-sm whitespace-nowrap">
-                      CV (UI/UX) 
-                      <FileText size={18} className="text-emerald-500 group-hover:scale-110 group-hover:-translate-y-0.5 transition-transform duration-300" />
-                    </span>
-                  </a>
-                </div>
               </div>
 
               <div style={{ animationDelay: "1000ms" }} className="hero-rise flex gap-8 items-center justify-center">

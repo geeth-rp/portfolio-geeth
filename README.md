@@ -14,9 +14,6 @@ portfolio-geeth/
 │   │   ├── ieee_cs_membership_certificate_2026.jpg
 │   │   ├── simplilearn_business_analysis_certificate.jpg
 │   │   └── simplilearn_power_bi_for_beginners.pdf
-│   ├── cv/                               # Curricula Vitae (CV) downloads
-│   │   ├── Geeth_Pelpola_CV_Business_Analyst.pdf
-│   │   └── Geeth_Pelpola_CV_UIUX_Designer.pdf
 │   └── leadership/                       # Leadership & organizational posters
 │       ├── ieee_vice_chairperson_poster.jpg
 │       └── sltc_media_unit_team.jpg
